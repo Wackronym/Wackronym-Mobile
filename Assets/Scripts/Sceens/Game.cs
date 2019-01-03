@@ -1,0 +1,353 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using System;
+
+
+public class Game : BaseUI
+{
+  
+    public TMPro.TextMeshPro Coins;
+    public RectTransform hours, minutes, seconds;
+    private const float hoursToDegrees = 360f / 12f, minutesToDegrees = 360f / 60f, secondsToDegrees = 360f / 60f;
+    public bool analog;
+
+    private string timedis;
+    public float sec;
+    private int min;
+    private int hou;
+    public int xpLevel;
+	public float chechTime;
+    public bool startime = false;
+
+    public TextMesh TextTime;
+	public string[] ss;
+	public string actualWord = string.Empty;
+	public string word = string.Empty;
+
+
+	
+	//LogicProperties
+	public GameObject[] slotWords;
+	public GameObject errorPopup;
+	public SENTENCES s;
+	public Text sentence;
+	public Text slot;
+	
+	public Image ring;
+	public Text round;
+	public float totalRound;
+	char[] characters;
+
+	void Awake(){
+		GameManager.Instance.errorPopup = errorPopup;
+	}
+	public void ShowKeyboard(){
+		GameManager.Instance.Scroll.transform.parent.GetChild(3).gameObject.SetActive (true);
+	}
+	public static String GetRandomString()
+	{
+		var allowedChars = GameManager.Instance.client.CList[0].game_letters;
+		var length = UnityEngine.Random.Range(3,6);
+
+		var chars = new char[length];
+		var rd = new System.Random();
+
+		for (var i = 0; i < length; i++)
+		{
+			chars[i] = allowedChars[rd.Next(0, allowedChars.Length)];
+		}
+
+		return new String(chars);
+	}
+
+    void Start()
+	{
+		
+        Time.timeScale = 1;
+	    CancelInvoke("DelayTime");
+	    
+	    if(GameManager.Instance.isFirstSession){
+	    	GameManager.Instance.isFirstSession = false;
+	    	CancelInvoke("DelayTime");
+		    Invoke("DelayTime", 1);
+	    }
+
+		base.AddMouseDownEvent();
+    }
+	void HandleWrite()
+	{
+		//this.slot.text += VirtualKeyboadManager.instance.lastInputString;
+	}
+	
+	void PopulateSLetters(){
+		characters = GetRandomString().ToCharArray();
+		foreach (GameObject wordSlot in slotWords)
+		{
+			wordSlot.SetActive(false);
+		}
+		GameObject wordSlotN = slotWords[characters.Length-3];
+		wordSlotN.SetActive(true);
+		if (wordSlotN.activeSelf)
+		{
+			for (int w = 0; w < wordSlotN.transform.childCount; w++)
+			{
+				GameObject Slot = wordSlotN.transform.GetChild(w).gameObject;
+				Slot.SetActive(true);
+				Slot.transform.GetChild(0).GetComponent<Image>().sprite =
+					GameManager.Instance.atlasLoader.getAtlas(characters[w].ToString().ToUpper());
+				Slot.transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
+				Slot.GetComponent<Image>().enabled = true;
+			}
+		}
+	}
+	
+	void OnEnable()
+	{	
+		
+		s = GameManager.Instance.client.GetRandomS();
+		sentence.text = s.puzzle;
+		totalRound = PlayerPrefs.GetInt("wRound", 1);
+		ring.fillAmount = 0;
+		GameManager.Instance.currentRound++;
+		
+		GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive(false);
+		GameManager.Instance.unlimited = false;
+		switch ( PlayerPrefs.GetInt("wMode", 0)){
+		case 0:
+			chechTime = 30;
+			break;
+		case 1:
+			chechTime = 60;
+			break;
+		case 2:
+			chechTime = 90;
+			break;
+		case 3:
+			chechTime = 300; 
+			GameManager.Instance.unlimited = true;
+			break;
+		}
+	    
+		round.text = "Round " + GameManager.Instance.currentRound.ToString()+"/"+totalRound.ToString();
+		PopulateSLetters();
+		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate = DateTime.Now.Date.ToString();
+		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration = chechTime.ToString();
+		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mId = GameManager.Instance.mItemDataList.Count-1;
+		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mName = PlayerPrefs.GetString("mName","Guest");
+		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mPic = "";
+		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mChecked = false;
+		RoundData rData = new RoundData();
+		rData.mSenence = s.puzzle;
+		rData.mCompleted = false;
+		rData.reCheck = true;
+		rData.mTotalRoundTime = chechTime.ToString();
+		rData.time = DateTime.Now.TimeOfDay.ToString();
+		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData.Add(rData);
+	}
+	
+	public void ValidateAnswer(){
+		if(isCorrectAnswer()){
+			if(GameManager.Instance.currentRound >= totalRound && GameManager.Instance.menuManager.NavigationStackPeek()!= UIManager.State.Win){
+				GameManager.Instance.cardIndex = GameManager.Instance.mItemDataList.Count-1;
+				GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
+				startime = false;
+				return;
+			}
+		
+			if( GameManager.Instance.menuManager.NavigationStackPeek()== UIManager.State.Win){
+			
+				return;
+			}
+			
+			GameManager.Instance.menuManager.PushMenu (UIManager.State.NewRound);//NextRound();
+			List<RoundData> r = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData;
+			r[r.Count-1].mUsedRoundTime = sec.ToString();
+			r[r.Count-1].mCompleted = true;
+			r[r.Count-1].reCheck = true;
+			r[r.Count-1].mAnswer = slot.text;
+			r[r.Count-1].id = GameManager.Instance.currentRound;
+			
+		}
+		else{
+			GameManager.Instance.GetComponent<AudioSource>().PlayOneShot(GameManager.Instance.wrong);
+			Handheld.Vibrate();
+		}
+	}
+	
+	public bool isCorrectAnswer(){
+		string[] ssize = slot.text.Split(new char[0]);
+		Debug.Log(ssize.Length-1);
+		Debug.Log(characters.Length);
+		bool isAnswerCorrect = true;
+		if(ssize.Length == characters.Length){
+			for(int i=0; i < characters.Length; i++){
+				if(Char.ToLower(characters[i])!=Char.ToLower(ssize[i][0])){
+					isAnswerCorrect = false;
+				}
+				Debug.Log(characters[i] + ": <> :"+ ssize[i][0]);
+			}
+			
+		}
+		else{
+			isAnswerCorrect = false;
+		}
+		
+		
+		return isAnswerCorrect;
+	}
+	
+	public void StartRoundPopup(){
+		startime = false;
+		GameManager.Instance.menuManager.PushMenu (UIManager.State.NewRound);
+	}
+	
+	public void NextRound()
+	{	
+		List<RoundData> r = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData;
+		if(GameManager.Instance.currentRound >= totalRound && GameManager.Instance.menuManager.NavigationStackPeek()!= UIManager.State.Win){
+			GameManager.Instance.cardIndex = GameManager.Instance.mItemDataList.Count-1;
+			r[r.Count-1].id = GameManager.Instance.currentRound-1;
+			r[r.Count-1].reCheck = true;
+			GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
+			startime = false;
+			return;
+		}
+		
+		if( GameManager.Instance.menuManager.NavigationStackPeek()== UIManager.State.Win){
+			
+			return;
+		}
+
+		r[r.Count-1].id = GameManager.Instance.currentRound-1;
+		r[r.Count-1].reCheck = true;
+		sec= 0f;
+
+		GameManager.Instance.currentRound++;
+		
+		GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive(false);
+		GameManager.Instance.unlimited = false;
+		switch ( PlayerPrefs.GetInt("wMode", 0)){
+		case 0:
+			chechTime = 30;
+			break;
+		case 1:
+			chechTime = 60;
+			break;
+		case 2:
+			chechTime = 90;
+			break;
+		case 3:
+			chechTime = 300; 
+			GameManager.Instance.unlimited = true;
+			break;
+		}
+		s = GameManager.Instance.client.GetRandomS();
+		sentence.text = s.puzzle;
+		totalRound = PlayerPrefs.GetInt("wRound", 1);
+		round.text = "Round " + GameManager.Instance.currentRound.ToString()+"/"+totalRound.ToString();
+		PopulateSLetters();
+		ClearTextInSlot();
+		RoundData rData = new RoundData();
+		rData.mSenence = s.puzzle;
+		rData.mCompleted = false;
+		rData.mTotalRoundTime = chechTime.ToString();
+		rData.time = DateTime.Now.TimeOfDay.ToString();
+		rData.reCheck = true;
+		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData.Add(rData);
+		
+	}
+	
+	void DelayTime(){
+		Time.timeScale = 0;
+		chechTime = chechTime +1;
+	}
+	
+	public void StopGame(){
+		GameManager.Instance.menuManager.PushMenu(UIManager.State.GiveUPPopUP);
+	}
+	
+	public void ClearTextInSlot(){
+		slot.text = "";
+	}
+
+    void Update()
+    {
+		if (GameManager.Instance.unlimited) {
+			TextTime.fontSize = 60;
+			TextTime.text = "Unlimited";
+			return;
+		}
+	
+        DateTime time = DateTime.Now;
+        if (analog)
+        {
+            TimeSpan timespan = DateTime.Now.TimeOfDay;
+            hours.localRotation =
+                Quaternion.Euler(0f, 0f, (float) timespan.TotalHours * -hoursToDegrees);
+            minutes.localRotation =
+                Quaternion.Euler(0f, 0f, (float) timespan.TotalMinutes * -minutesToDegrees);
+            seconds.localRotation =
+                Quaternion.Euler(0f, 0f, (float) timespan.TotalSeconds * -secondsToDegrees);
+        }
+        else
+        {
+            hours.localRotation = Quaternion.Euler(0f, 0f, time.Hour * -hoursToDegrees);
+            minutes.localRotation = Quaternion.Euler(0f, 0f, time.Minute * -minutesToDegrees);
+            seconds.localRotation = Quaternion.Euler(0f, 0f, time.Second * -secondsToDegrees);
+        }
+
+        //Count time only whent this is true
+	    if (startime == true) {
+		    Time.timeScale = 1;
+			//Adding seconds
+			sec += Time.deltaTime;
+			
+			string min, sect;
+			min = Mathf.Floor ((chechTime - Mathf.FloorToInt (sec)) / 60).ToString ("00");
+			sect = Mathf.Floor ((chechTime - Mathf.FloorToInt (sec)) % 60).ToString ("00");
+			if (min.Length < 2) {
+				min = "0" + min;
+			}
+
+			if (sect.Length < 2) {
+				min = "0" + min;
+			}
+			TextTime.text = min + ":" + sect;
+		    ring.fillAmount = sec/chechTime;
+			if (Mathf.FloorToInt (sec) > chechTime) {
+				startime = false;
+				TextTime.text = "00:00";
+				GameManager.Instance.menuManager.PushMenu (UIManager.State.NewRound);
+			}
+		} else {
+			//TextTime.text = "00:00";
+		}
+    }
+
+    public void GiveUpPopUp()
+	{
+		if(errorPopup.activeSelf){
+			return;
+		}
+		if(GameManager.Instance.giveupScreen.activeSelf)
+			return;
+        GameManager.Instance.menuManager.PushMenu(UIManager.State.GiveUPPopUP);
+		GiveUp scr = GameManager.Instance.gameObject.GetComponentInChildren<GiveUp>();
+		
+        GameManager.Instance.GetComponent<AudioSource>().PlayOneShot(GameManager.Instance.click);
+    }
+
+    public void UpdateUI()
+    {
+        Coins.text = GameManager.Instance.Coin().ToString();
+        Invoke("CheckUI", .5f);
+    }
+
+    private void CheckUI()
+    {
+        Coins.enabled = false;
+        Coins.enabled = true;
+    }
+}
