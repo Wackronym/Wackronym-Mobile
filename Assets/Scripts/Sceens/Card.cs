@@ -82,16 +82,16 @@ using UnityEngine.UI;
 			mLoopListView.InitListView(Card.Get.TotalItemCount, InitScrollView);
 			mLoopListView.mOnEndDragAction = OnEndDrag;
 			if( GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration.Equals("90")){
-				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10) + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
+				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10);// + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
 			}
 			else if( GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration.Equals("60")){
-				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10) + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
+				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10);// + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
 			}
 			else if( GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration.Equals("30")){
-				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10) + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
+				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10);// + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
 			}
 			else{
-				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10) + " | Duration: Unlimited"; 
+				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10);// + " | Duration: Unlimited"; 
 			}
 			
 			mName.text = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mName;

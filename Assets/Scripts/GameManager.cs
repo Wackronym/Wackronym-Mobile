@@ -37,6 +37,13 @@ public class GameManager : Singleton<GameManager>
 	public List<CardData> mItemDataList = new List<CardData>();
 	
 	public int cardIndex;
+	
+	public string webURLPrefix = "https://159.203.125.111/api/";
+	
+	public GameObject topPopup;
+	public Player player;
+	
+	
 	public void PopSetting(){
 		if(GameManager.Instance.menuManager.NavigationStackPeek() == UIManager.State.Settings){
 			GameManager.Instance.menuManager.PopMenuToState(UIManager.State.MainMenu);
@@ -122,7 +129,13 @@ public class GameManager : Singleton<GameManager>
         DontDestroyOnLoad(gameObject);
         menuManager.OnStateChange += UpdateState;
     }
-
+	
+	public void ShowProfile(){
+		if(GameManager.Instance.menuManager.NavigationStackPeek() != UIManager.State.Profile){
+			GameManager.Instance.menuManager.PushMenu(UIManager.State.Profile);
+		}		
+	}
+	
     public void UpdateState(UIManager.State g)
     {
     }

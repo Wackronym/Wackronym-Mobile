@@ -192,7 +192,6 @@ GameObject:
   - component: {fileID: 224169585924503212}
   - component: {fileID: 222683521911143130}
   - component: {fileID: 114703517226779086}
-  - component: {fileID: 114470308869352824}
   m_Layer: 8
   m_Name: SelectWord
   m_TagString: Untagged
@@ -290,7 +289,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114470308869352824}
+      - m_Target: {fileID: 0}
         m_MethodName: ActivateEndWord
         m_Mode: 1
         m_Arguments:
@@ -504,25 +503,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114470308869352824
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1720703240643356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ab358289ad56094e8838af2c2e47ae3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: 8
-  isPopup: 0
-  soundOn: {fileID: 0}
-  soundOff: {fileID: 0}
-  item: {fileID: 0}
-  title: {fileID: 114077691111529840}
-  startWord: {fileID: 0}
-  endWord: {fileID: 114062013295807674}
 --- !u!114 &114490219437003166
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -562,7 +542,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114470308869352824}
+      - m_Target: {fileID: 0}
         m_MethodName: playNextLevel
         m_Mode: 1
         m_Arguments:
@@ -641,7 +621,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114470308869352824}
+      - m_Target: {fileID: 0}
         m_MethodName: PlayGame
         m_Mode: 1
         m_Arguments:

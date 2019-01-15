@@ -14,9 +14,6 @@ public class BaseUI : MonoBehaviour
 	public bool isPopup = false;
 	private bool isSoundEnabled = false;
 
-	public Sprite soundOn;
-	public Sprite soundOff;
-	public Image item;
 
 	void Awake(){
 
@@ -30,29 +27,6 @@ public class BaseUI : MonoBehaviour
 		} else {
 			PlayerPrefs.SetInt ("isSoundEnabled", 1);
 		}
-
-		GameObject itemClicked = null;
-		if(itemClicked == null){
-			if (item != null) {
-				itemClicked = item.gameObject;
-			} else {
-				return;
-			}
-		}
-		if (AudioListener.volume == 0f) {
-			itemClicked.GetComponent<Image> ().sprite = soundOff;
-
-			// Next Time User Clicks, Sound Will Get Enabled as If part will get executed
-			isSoundEnabled = true;
-		} else {
-			itemClicked.GetComponent<Image>().sprite = soundOn;
-			// Next Time User Clicks, Sound Will Get Disabled as else part will get executed
-			isSoundEnabled = false;
-		}
-
-
-
-		//Debug.LogError ("vcb");
 
 	}
 	
@@ -125,35 +99,6 @@ public class BaseUI : MonoBehaviour
 
 	public void MenuDidDisappear()
 	{
-	}
-
-
-	// This Method will Control Sound state through out the Game
-	public void OnSoundClicked(GameObject itemClicked)
-	{
-		if(isSoundEnabled)
-		{
-			// Enable sound
-			AudioListener.volume = 1f;
-			//Changing the Image of the Sound
-			itemClicked.GetComponent<Image>().sprite = soundOn;
-			// Next Time User Clicks, Sound Will Get Disabled as else part will get executed
-			isSoundEnabled = false;
-			PlayerPrefs.SetInt ("isSoundEnabled", 1);
-		}
-		else
-		{
-			//Disable Sound
-			AudioListener.volume = 0f;
-			//Changing the Image of the Sound
-			itemClicked.GetComponent<Image>().sprite = soundOff;
-
-			// Next Time User Clicks, Sound Will Get Enabled as If part will get executed
-			isSoundEnabled = true;
-
-			PlayerPrefs.SetInt ("isSoundEnabled", 0);
-		}
-
 	}
 }
 

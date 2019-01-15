@@ -14,7 +14,7 @@ public class Client : MonoBehaviour {
 	private const string CONTENT_TYPE_JSON = "application/json";
 	
 	//Parse REST API Base URL
-	public static string BASE_URL = "https://159.203.125.111/api/";
+
 	public static string SENTENCES = "sentences";
 	public static string CONFIGS = "configs";
 	public IJsonEncoder JsonEncoder { get; set; }
@@ -23,7 +23,7 @@ public class Client : MonoBehaviour {
 	public List<CONFIGS> CList;
 	void Start(){
 		
-		HTTPRequest www = new HTTPRequest(new Uri( BASE_URL + Client.SENTENCES), (request, response) => {
+		HTTPRequest www = new HTTPRequest(new Uri(  GameManager.Instance.webURLPrefix + Client.SENTENCES), (request, response) => {
 			HTTPResponse res = (HTTPResponse)response;
 			if(res.IsSuccess){
 				
@@ -37,7 +37,7 @@ public class Client : MonoBehaviour {
 					SList.Add(s);
 				}
 				
-				HTTPRequest conf = new HTTPRequest(new Uri( BASE_URL + Client.CONFIGS), (requestC, responseC) => {
+				HTTPRequest conf = new HTTPRequest(new Uri(  GameManager.Instance.webURLPrefix + Client.CONFIGS), (requestC, responseC) => {
 					HTTPResponse resConf = (HTTPResponse)responseC;
 					if(resConf.IsSuccess){
 				
@@ -121,6 +121,23 @@ public class CONFIGS
 	public string created;
 	[SerializeField]
 	public string name;
+}
+[Serializable]
+public class Player
+{
+	public string _id ;
+	public string displayName;
+	public string provider;
+	public string username;
+	public int __v;
+	public string resetPasswordExpires;
+	public string resetPasswordToken;
+	public string created;
+	public List<string> roles;
+	public string profileImageURL;
+	public string email;
+	public string lastName;
+	public string firstName;
 }
 
 

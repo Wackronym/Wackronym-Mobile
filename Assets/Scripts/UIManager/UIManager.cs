@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour {
 	{
 		Splash = 0,
 		MainMenu = 1,
-		Help = 2,
+		Authenticate = 2,
 		Settings = 3,
 		NewRound = 4,
 		Game = 5,
@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour {
         Resume = 10,
         GiveUPPopUP = 11,
         Ads = 12,
-        Loader = 13,
+		Profile = 13,
     }
 
 	#region Variables
