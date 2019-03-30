@@ -15,13 +15,16 @@ public class CardItem : MonoBehaviour {
 	int mItemDataIndex = -1;
 	public LoopListView2 mLoopListView;
 	public CardData data;
+	bool isHistory;
 	public void Init()
 	{
    
 	}
-	public void SetItemData(CardData itemData,int itemIndex)
+	public void SetItemData(CardData itemData,int itemIndex , bool _isHistory)
 	{
 		data = itemData;
+		isHistory = _isHistory;
+		data.mId = itemIndex;
 		mItemDataIndex = itemIndex;
 		System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-GB");
 		DateTime d = DateTime.Parse(data.mDate);
@@ -41,6 +44,7 @@ public class CardItem : MonoBehaviour {
 			GameManager.Instance.cardIndex = data.mId;
 			GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
 			GameManager.Instance.menuManager.GetComponentInChildren<Card>().HideSaveButton();
+			GameManager.Instance.menuManager.GetComponentInChildren<Card>().isHistory = isHistory;
 		}
 	}
 

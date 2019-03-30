@@ -1837,9 +1837,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 11
   isPopup: 1
-  soundOn: {fileID: 0}
-  soundOff: {fileID: 0}
-  item: {fileID: 0}
 --- !u!114 &114803722741595232
 MonoBehaviour:
   m_ObjectHideFlags: 1

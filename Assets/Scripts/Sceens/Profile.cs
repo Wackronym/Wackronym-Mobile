@@ -13,6 +13,8 @@ public class Profile : BaseUI {
 	public InputField email;
 	public InputField username;
 	public Image profilePic;
+	
+	public Text status;
 	void Start () {
 		transform.parent = GameManager.Instance.topPopup.transform;
 		if(GameManager.Instance.player.username==""){
@@ -23,6 +25,7 @@ public class Profile : BaseUI {
 		else{
 			RefresUI();
 		}
+		base.AddMouseDownEvent();
 	}
 	
 	
@@ -45,8 +48,15 @@ public class Profile : BaseUI {
 
 		
 	}
-	// Update is called once per frame
-	void Update () {
+	
+	public void UpdateProfile(){
 		
+	}
+	
+	public void LogOut(){
+		GameManager.Instance.player.username = "";
+		PlayerPrefs.DeleteKey("usernameOrEmail");
+		PlayerPrefs.DeleteKey("password");
+		GameManager.Instance.menuManager.PopMenu();
 	}
 }

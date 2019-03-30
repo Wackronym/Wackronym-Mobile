@@ -11,7 +11,7 @@ namespace MaterialUI
     [CustomEditor(typeof(TabView))]
     class TabViewEditor : MaterialBaseEditor
     {
-        private TabView m_TabView;
+	    public TabView m_TabView;
 
         private SerializedProperty m_AutoTrackPages;
         private SerializedProperty m_Pages;

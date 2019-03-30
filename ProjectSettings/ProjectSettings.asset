@@ -225,7 +225,7 @@ PlayerSettings:
   appleEnableAutomaticSigning: 1
   AndroidTargetDevice: 3
   AndroidSplashScreenScale: 2
-  androidSplashScreen: {fileID: 0}
+  androidSplashScreen: {fileID: 2800000, guid: 21e533f164f2b034a86413de98c59025, type: 3}
   AndroidKeystoreName: 
   AndroidKeyaliasName: 
   AndroidTVCompatibility: 0

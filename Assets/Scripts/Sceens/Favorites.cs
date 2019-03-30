@@ -6,7 +6,7 @@ using BayatGames.SaveGamePro;
 using System;
 using UnityEngine.UI;
 
-	public class History : MonoBehaviour
+	public class Favorites : MonoBehaviour
 	{
 		
 		
@@ -27,13 +27,49 @@ using UnityEngine.UI;
 		{
 			Init();
 			InitData();
-			
+			foreach(Toggle t in GetComponentsInChildren<Toggle>()){
+				if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
+					t.enabled = false;	
+				}
+				
+			}
+		}
+		
+		void OnEnable(){
+			//GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive(false);
 		}
 		void Start()
 		{
 			mLoopListView.InitListView(TotalItemCount, InitScrollView);
+			mLoopListView.mOnEndDragAction = OnEndDrag;
+		
 		}
 		
+		public void RemoveFavorite(){
+			GameManager.Instance.favObj.SetActive(false);
+			GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.RemoveAt(GameManager.Instance.favRIndex);
+			if(GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.Count==0){
+				GameManager.Instance.favorite.RemoveAt(GameManager.Instance.favMIndex);
+			}
+			GameManager.Instance.dummyFavorite.RemoveAt(GameManager.Instance.favTempIndex);
+			SaveGame.Save ( "Favorites", GameManager.Instance.favorite);
+			
+		}
+		
+		void OnEndDrag()
+		{
+			if (mLoopListView.ShownItemCount == 0)
+			{
+				return;
+			}
+			
+			LoopListViewItem2 item = mLoopListView.GetShownItemByItemIndex(0);
+			if (item == null)
+			{
+				return;
+			}
+			mLoopListView.OnItemSizeChanged(item.ItemIndex);
+		}
 		void InitData()
 		{
 			spriteObjDict.Clear();
@@ -45,7 +81,7 @@ using UnityEngine.UI;
 		
 		public void Init()
 		{
-			//DoRefreshDataSource();
+			DoRefreshDataSource();
 		}
 		
 		public void SetDataTotalCount(int count)
@@ -56,67 +92,34 @@ using UnityEngine.UI;
 
 		public void DoRefreshDataSource()
 		{
-			//SaveGame.Save ( "history", history );
+			//SaveGame.Save ( "favorite", favorite );
 			Debug.Log("Called");
 			
-			if(GameManager.Instance.history==null){
+			if(GameManager.Instance.dummyFavorite==null){
 				return;
-				if(GameManager.Instance.history.Count == 0){
+				if(GameManager.Instance.favorite.Count == 0){
 					return;
 				}
 			}
-			mTotalDataCount = GameManager.Instance.history.Count;
+			mTotalDataCount = GameManager.Instance.favorite.Count;
 			mIsWaittingRefreshData = true;
 			mDataLoadLeftTime = 1;
 			//mLoopListView.SetListItemCount(mTotalDataCount);
-			
-		}
-		public void Update()
-		{
-			if (mIsWaittingRefreshData)
-			{
-				mDataLoadLeftTime -= Time.deltaTime;
-				if (mDataLoadLeftTime <= 0)
-				{
-					mIsWaittingRefreshData = false;
-					//DoRefreshDataSource();
-					if (mOnRefreshFinished != null)
-					{
-						mOnRefreshFinished();
-					}
-				}
-			}
-			else if (mIsWaitLoadingMoreData)
-			{
-				mDataLoadLeftTime -= Time.deltaTime;
-				if (mDataLoadLeftTime <= 0)
-				{
-					mIsWaitLoadingMoreData = false;
-					DoRefreshDataSource();
-					if (mOnLoadMoreFinished != null)
-					{
-						mOnLoadMoreFinished();
-					}
-				}
-			}
 
 		}
-		/*public void SaveData(){
-			if(gameObject.name == "Favorites"){
-				SaveGame.Save ( "Favorites", GameManager.Instance.history );
-			}else{
-				SaveGame.Save ( "history", GameManager.Instance.history );
-			}
-				
+		
+		public void SaveData(){
+			MainMenu();
 			
-		}*/
+		}
 		public void MainMenu(){
 			
-			GameManager.Instance.history.RemoveAt(GameManager.Instance.history.Count-1);
+			GameManager.Instance.favorite.RemoveAt(GameManager.Instance.favorite.Count-1);
 			GameManager.Instance.menuManager.PopMenuToState (UIManager.State.MainMenu);
 			GameManager.Instance.GetComponent<AudioSource>().PlayOneShot(GameManager.Instance.click);
 			GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive (true);
 		}
+
 		LoopListViewItem2 InitScrollView(LoopListView2 listView, int index)
 		{
 			if (index < 0 || index >= TotalItemCount)
@@ -124,22 +127,21 @@ using UnityEngine.UI;
 				return null;
 			}
 
-			CardData itemData = GetItemDataByIndex(index);
+			RoundData itemData = GetItemDataByIndex(index);
 			if(itemData == null)
 			{
 				return null;
 			}
-			
 			//get a new item. Every item can use a different prefab, the parameter of the NewListViewItem is the prefab’name. 
 			//And all the prefabs should be listed in ItemPrefabList in LoopListView2 Inspector Setting
-			LoopListViewItem2 item = listView.NewListViewItem("CardItem");
-			CardItem itemScript = item.GetComponent<CardItem>();
+			LoopListViewItem2 item = listView.NewListViewItem("RoundItem");
+			RoundItem itemScript = item.GetComponent<RoundItem>();
 			if (item.IsInitHandlerCalled == false)
 			{
 				item.IsInitHandlerCalled = true;
 				itemScript.Init();
 			}
-			itemScript.SetItemData(itemData,index, true);
+			itemScript.SetItemData(itemData,index, false);
 			return item;
 		}
 
@@ -169,23 +171,23 @@ using UnityEngine.UI;
 			return null;
 		}
 
-		public CardData GetItemDataByIndex(int index)
+		public RoundData GetItemDataByIndex(int index)
 		{
-			if (index < 0 || index >= GameManager.Instance.history.Count)
+			if (index < 0 || index >= GameManager.Instance.dummyFavorite.Count)
 			{
 				return null;
 			}
-			return GameManager.Instance.history[index];
+			return GameManager.Instance.dummyFavorite[index];
 		}
 
-		public CardData GetItemDataById(int itemId)
+		public RoundData GetItemDataById(int itemId)
 		{
-			int count = GameManager.Instance.history.Count;
+			int count = GameManager.Instance.dummyFavorite.Count;
 			for (int i = 0; i < count; ++i)
 			{
-				if(GameManager.Instance.history[i].mId == itemId)
+				if(GameManager.Instance.dummyFavorite[i].id == itemId)
 				{
-					return GameManager.Instance.history[i];
+					return GameManager.Instance.dummyFavorite[i];
 				}
 			}
 			return null;
@@ -194,11 +196,11 @@ using UnityEngine.UI;
 		public int TotalItemCount
 		{
 			get
-			{	if(GameManager.Instance.history== null)
+			{	if(GameManager.Instance.dummyFavorite== null)
 			{
 				return 0;
 			}
-				return GameManager.Instance.history.Count;
+				return GameManager.Instance.dummyFavorite.Count;
 			}
 		}
 
@@ -230,29 +232,6 @@ using UnityEngine.UI;
 		}
 		
 
-		public void CheckAllItem()
-		{
-			int count = GameManager.Instance.history.Count;
-			for (int i = 0; i < count; ++i)
-			{
-				GameManager.Instance.history[i].mChecked = true;
-			}
-		}
-
-		public void UnCheckAllItem()
-		{
-			int count = GameManager.Instance.history.Count;
-			for (int i = 0; i < count; ++i)
-			{
-				GameManager.Instance.history[i].mChecked = false;
-			}
-		}
-
-		public bool DeleteAllCheckedItem()
-		{
-			int oldCount = GameManager.Instance.history.Count;
-			GameManager.Instance.history.RemoveAll(it => it.mChecked);
-			return (oldCount != GameManager.Instance.history.Count);
-		}
+		
 
 	}

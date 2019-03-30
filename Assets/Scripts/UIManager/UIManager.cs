@@ -306,7 +306,7 @@ public class UIManager : MonoBehaviour {
 		}
 	}
 
-	private BaseUI GetMenuForState(UIManager.State g)
+	public BaseUI GetMenuForState(UIManager.State g)
 	{
 		return menuTable[g] as BaseUI;
 	}

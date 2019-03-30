@@ -14,7 +14,9 @@ using UnityEngine.UI;
 	    public string mDuration;
 	    public string mPic;
 	    public bool mChecked;
+	    public int mainIndex;
 	    public List<RoundData> rData = new List<RoundData>();
+	    
     }
     [Serializable]
     public class RoundData{
@@ -26,6 +28,8 @@ using UnityEngine.UI;
 	    public string time;
 	    public float id;
 	    public bool reCheck = false;
+	    public int mainIndex;
+	    public int innerIndex;
     }
     
 
@@ -39,7 +43,7 @@ using UnityEngine.UI;
 		public Image mPic;
 		public GameObject saveButton;
 		public LoopListView2 mLoopListView;
-		
+		public int mainCardIndex;
 		public Sprite[] spriteObjArray;
 		System.Action mOnRefreshFinished = null;
 		System.Action mOnLoadMoreFinished = null;
@@ -52,7 +56,9 @@ using UnityEngine.UI;
 		private bool saveOnExit = false;
 		Dictionary<string, Sprite> spriteObjDict = new Dictionary<string, Sprite>();
 		static Card instance = null;
-
+		public List<int> indexRemove;
+		
+		public bool isHistory;
 		public static Card Get
 		{
 			get
@@ -76,6 +82,10 @@ using UnityEngine.UI;
 				}
 				
 			}
+		}
+		
+		void OnEnable(){
+			GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive(false);
 		}
 		void Start()
 		{
@@ -141,10 +151,11 @@ using UnityEngine.UI;
 		
 		public void SaveData(){
 			saveOnExit = true;
+			MainMenu();
 			
 		}
 		public void MainMenu(){
-			List<int> indexRemove= new List<int>();
+			indexRemove= new List<int>();
 			CardData c = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1];
 			foreach(Toggle t in GetComponentsInChildren<Toggle>(true)){
 				if(t.isOn){
@@ -152,14 +163,29 @@ using UnityEngine.UI;
 					foreach(RoundData d in c.rData){
 						if(d.id ==  item.data.id){
 							Debug.Log((int)d.id);
-							indexRemove.Add((int)d.id);
+							if(t.transform.parent.gameObject.name.Contains("Clone")){
+								indexRemove.Add((int)d.id);
+							}
+							
 						}
 					}
 				}
 			}
 			
-			if(saveOnExit && indexRemove.Count>0){
-
+			if(saveOnExit){
+				if(SaveGame.Load<List<CardData>> ( "History" )!=null){
+					GameManager.Instance.history = SaveGame.Load<List<CardData>> ( "History" );
+				}
+				GameManager.Instance.history.Add(GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1]);
+				SaveGame.Save ( "History", GameManager.Instance.history);
+			}
+				
+			
+			//GameManager.Instance.mItemDataList = SaveGame.Load<List<CardData>> ( "mItemDataList" );
+			if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
+				GameManager.Instance.menuManager.PopMenu ();
+			}
+			else{
 				foreach(Toggle t in GetComponentsInChildren<Toggle>(true)){
 					if(t.isOn){
 						RoundItem item = t.transform.parent.GetComponent<RoundItem>();
@@ -187,15 +213,17 @@ using UnityEngine.UI;
 				}
 				c.rData.RemoveAll(it => it.reCheck);
 			
-			
-				SaveGame.Save ( "mItemDataList", GameManager.Instance.mItemDataList );
-			}
-			GameManager.Instance.mItemDataList = SaveGame.Load<List<CardData>> ( "mItemDataList" );
-			if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
-				GameManager.Instance.menuManager.PopMenu ();
-			}
-			else{
+				if(indexRemove.Count>0){
+					if(SaveGame.Load<List<CardData>> ( "Favorites" )!=null){
+						GameManager.Instance.favorite = SaveGame.Load<List<CardData>> ( "Favorites" );
+					}
+					GameManager.Instance.favorite.Add(GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1]);
+					
+					SaveGame.Save ( "Favorites", GameManager.Instance.favorite);
+				}
+				GameManager.Instance.mItemDataList.Clear();
 				GameManager.Instance.menuManager.PopMenuToState (UIManager.State.MainMenu);
+				
 			}
 			
 			GameManager.Instance.GetComponent<AudioSource>().PlayOneShot(GameManager.Instance.click);
@@ -222,7 +250,7 @@ using UnityEngine.UI;
 				item.IsInitHandlerCalled = true;
 				itemScript.Init();
 			}
-			itemScript.SetItemData(itemData,index);
+			itemScript.SetItemData(itemData,index, isHistory);
 			return item;
 		}
 

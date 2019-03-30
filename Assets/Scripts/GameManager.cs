@@ -35,19 +35,29 @@ public class GameManager : Singleton<GameManager>
 	public Client client;
 	public float currentRound;
 	public List<CardData> mItemDataList = new List<CardData>();
-	
+	public List<CardData> history = new List<CardData>();
+	public List<CardData> favorite = new List<CardData>();
+	public List<RoundData> dummyFavorite = new List<RoundData>();
 	public int cardIndex;
+	public int favMIndex;
+	public int favRIndex;
+	public int favTempIndex;
+	public GameObject favObj;
+	public int activeTabIndex;
 	
-	public string webURLPrefix = "https://159.203.125.111/api/";
+	public string webURLPrefix = "https://wackronym.net/api/";
 	
 	public GameObject topPopup;
 	public Player player;
 	
 	
 	public void PopSetting(){
-		if(GameManager.Instance.menuManager.NavigationStackPeek() == UIManager.State.Settings){
-			GameManager.Instance.menuManager.PopMenuToState(UIManager.State.MainMenu);
-		}		
+		if(GameManager.Instance.menuManager.navigationStack.Count >=2){
+			GameManager.Instance.menuManager.PopMenu();
+		}
+		else if(GameManager.Instance.menuManager.navigationStack.Count ==1){
+			GameManager.Instance.menuManager.GetComponentInChildren<Menu>().Home();
+		}
 	}
 
 

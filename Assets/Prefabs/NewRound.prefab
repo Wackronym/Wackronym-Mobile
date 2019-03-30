@@ -1274,9 +1274,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 4
   isPopup: 1
-  soundOn: {fileID: 0}
-  soundOff: {fileID: 0}
-  item: {fileID: 0}
   TextTime: {fileID: 114040453053856636}
   chechTime: 5
   startime: 0

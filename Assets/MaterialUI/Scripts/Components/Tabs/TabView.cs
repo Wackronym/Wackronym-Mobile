@@ -473,7 +473,7 @@ namespace MaterialUI
 
         public void SetPage(int index)
         {
-            SetPage(index, true);
+	        SetPage(index, false);
         }
 
         public void SetPage(int index, bool animate)

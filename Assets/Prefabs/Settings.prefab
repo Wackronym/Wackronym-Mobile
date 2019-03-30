@@ -2359,9 +2359,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 3
   isPopup: 1
-  soundOn: {fileID: 21300000, guid: 698e3c0e1d065ed4d9bef7c5b3b0577a, type: 3}
-  soundOff: {fileID: 21300000, guid: 13684e30e73ec3d46bdcc0bd6ff71178, type: 3}
-  item: {fileID: 114090398491775660}
   option_1: {fileID: 114817362954862560}
   option_2: {fileID: 114668281861148478}
   option_3: {fileID: 114867433328787960}

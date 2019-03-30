@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 namespace MaterialUI
 {
+	using BayatGames.SaveGamePro;
+	using System.Collections.Generic;
     [AddComponentMenu("MaterialUI/Tab Item", 100)]
     public class TabItem : Selectable, IPointerClickHandler, ISubmitHandler
     {
@@ -74,6 +76,12 @@ namespace MaterialUI
                 m_TabView.SetPage(id);
             }
         }
+        
+        
+	    public void HomeTab(int _id)
+	    {
+			 m_TabView.SetPage(_id);
+	    }
 
         public override void OnPointerDown(PointerEventData eventData)
         {
@@ -81,9 +89,68 @@ namespace MaterialUI
             if (interactable)
             {
 	            // m_TabView.TabItemPointerDown(id);
+	            GameManager.Instance.activeTabIndex = 0;
+	            Debug.Log(id);
 	            m_TabView.SetPage(id);
+	            if(id == 0){
+	            	
+	            	if(transform.name == "My Friends"){
+	            		GameManager.Instance.BroadcastMessage("GetAllFriendsList");
+	            	}
+	            }
+	            else if(id == 1){
+	            	if(transform.name == "History"){
+	            		if(SaveGame.Load<List<CardData>> ( "History" )!=null){
+            				GameManager.Instance.history = SaveGame.Load<List<CardData>> ( "History" );
+	            		}
+	            		GameManager.Instance.mItemDataList = GameManager.Instance.history;
+	            		History h = GameManager.Instance.GetComponentInChildren<History>(true);
+		            	
+		            	h.enabled = true;
+		            	Debug.Log(h.name);
+		            	h.DoRefreshDataSource();
+		            	GameManager.Instance.activeTabIndex = id;
+	            	}
+	            	if(transform.name == "Friend Requests"){
+	            		GameManager.Instance.BroadcastMessage("GetAllPendingFriends");
+	            	}
+	            }
+	            else if(id == 2){
+	            	if(transform.name == "Friend Requests"){
+	            		GameManager.Instance.BroadcastMessage("GetAllPendingFriends");
+	            	}
+	            	if(transform.name == "Favorites"){
+	            		if(SaveGame.Load<List<CardData>> ( "Favorites" )!=null){
+            				GameManager.Instance.favorite = SaveGame.Load<List<CardData>> ( "Favorites" );
+            				for(int i=0;i< GameManager.Instance.favorite.Count;i++){
+            					CardData c = GameManager.Instance.favorite[i];
+            					for(int t=0; t < c.rData.Count;t++  ){
+            						RoundData r = c.rData[t]; 
+            						r.mainIndex = i;
+            						r.innerIndex = t;
+            						GameManager.Instance.dummyFavorite.Add(r);
+            					}
+            				}
+	            		}
+	            		GameManager.Instance.mItemDataList = GameManager.Instance.favorite;
+	            		Favorites h = GameManager.Instance.GetComponentInChildren<Favorites>(true);
+		            	
+		            	h.enabled = true;
+            			h.DoRefreshDataSource();	
+            			GameManager.Instance.activeTabIndex = id;
+	            		}
+            	}
+	            else if(id == 3){
+	            	
+	            	GameManager.Instance.BroadcastMessage("GetAllPendingFriends");
+	            	GameManager.Instance.BroadcastMessage("GetAllFriendsList");
+	            }
             }
         }
+        
+	    void Callme(){
+	    	
+	    }
 
         public void OnSubmit(BaseEventData eventData)
         {

@@ -31,8 +31,8 @@ public class BaseUI : MonoBehaviour
 	}
 	
 	public void AddMouseDownEvent(){
-		foreach(Button b in GetComponentsInChildren<Button>(true)){
-			if(b.transform.parent.name == "Characters" || b.transform.parent.name == "All" || b.transform.parent.name == "CardItem")
+		foreach(Button b in GetComponentsInChildren<Button>(true)){//|| b.transform.parent.name == "All" 
+			if(b.transform.parent.name == "Characters" || b.transform.parent.name == "CardItem")
 				return;
 			EventTrigger trigger = b.gameObject.AddComponent<EventTrigger>();
 			EventTrigger.Entry entry = new EventTrigger.Entry();

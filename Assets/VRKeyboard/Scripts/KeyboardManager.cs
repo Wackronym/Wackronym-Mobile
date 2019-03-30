@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 namespace VRKeyboard.Utils {
+	using UnityEngine.EventSystems;
     public class KeyboardManager : MonoBehaviour {
         #region Public Variables
         [Header("User defined")]
@@ -51,15 +52,39 @@ namespace VRKeyboard.Utils {
                 keysDictionary.Add(key, _text);
 
                 key.GetComponent<Button>().onClick.AddListener(() => {
-                    GenerateInput(_text.text);
+	                //  GenerateInput(_text.text);
                 });
+	            key.GetComponent<Button>().enabled = false;
+	            EventTrigger trigger = key.gameObject.AddComponent<EventTrigger>();
+	            EventTrigger.Entry entry = new EventTrigger.Entry();
+	            entry.eventID = EventTriggerType.PointerDown;
+	            entry.callback.AddListener((eventData) => {
+		            GenerateInput(_text.text);
+	            });
+	            trigger.triggers.Add(entry);
             }
 
             capslockFlag = isUppercase;
-            CapsLock();
+	        CapsLock();
+	        
         }
         #endregion
-
+		
+	    public void AddMouseDownEvent(){
+		    foreach(Button b in GetComponentsInChildren<Button>(true)){
+			    EventTrigger trigger = b.gameObject.AddComponent<EventTrigger>();
+			    EventTrigger.Entry entry = new EventTrigger.Entry();
+			    entry.eventID = EventTriggerType.PointerDown;
+			    entry.callback.AddListener( (eventData) => {
+				    this.Invoke(b.onClick.GetPersistentMethodName (0),0f);
+			    });
+			    trigger.triggers.Add(entry);
+			    b.enabled = false;
+		    }
+		
+		
+	    }
+		
         #region Public Methods
         public void Backspace() {
             if (Input.Length > 0) {

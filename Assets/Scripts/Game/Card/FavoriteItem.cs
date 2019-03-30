@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SuperScrollView;
 
-public class RoundItem : MonoBehaviour {
+public class FavoriteItem : MonoBehaviour {
 	
 	
 	public Text mTitle;
@@ -15,16 +15,17 @@ public class RoundItem : MonoBehaviour {
 	public LoopListView2 mLoopListView;
 	public RoundData data;
 	public Text underline;
-	public int mainCardIndex;
-	Dictionary<string, Sprite> spriteObjDict = new Dictionary<string, Sprite>();
-	public Sprite[] spriteObjArray;
+	public int FavListIndex;
+	public int RoundIndex;
 	public void Init()
 	{
    
 	}
 	
-	public void SetItemData(RoundData itemData,int itemIndex, bool isHistory)
+	public void SetItemData(RoundData itemData,int itemIndex, bool isHistory, int _FavListIndex, int _RoundIndex)
 	{
+		RoundIndex = _RoundIndex;
+		FavListIndex = _FavListIndex;
 		underline = mBody.transform.GetChild(0).GetComponent<Text>();
 		data = itemData;
 		data.id = itemIndex;
@@ -61,79 +62,31 @@ public class RoundItem : MonoBehaviour {
 		
 		if(data.mAnswer!=null){
 			underline.text += "<color=black>"; 
-		for(int i=0; i<data.mAnswer.Length-1;i++){
-			underline.text += "_";
-		}
+			for(int i=0; i<data.mAnswer.Length-1;i++){
+				underline.text += "_";
+			}
 			underline.text += "</color>";
 		}
 		
 		
 		if(data.mCompleted){
-			mStatus.sprite = GetSpriteByName("checked");	
+			mStatus.sprite = Card.Get.GetSpriteByName("checked");	
 		}
 		else{
-			mStatus.sprite = GetSpriteByName("unchecked");	
+			mStatus.sprite = Card.Get.GetSpriteByName("unchecked");	
 		}
 		
 		if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
 			Toggle t = GetComponentInChildren<Toggle>();
 			if(t!=null){
 				t.isOn = true;
-				//t.enabled = false;	
+				t.enabled = false;	
 				if(isHistory){
 					t.gameObject.SetActive(false);
 				}
-				
-				
 			}
 			
 		}
-	}
-	
-	public void ReEnable(){
-		if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
-			Toggle t = GetComponentInChildren<Toggle>();
-			if(t!=null){
-				t.isOn = true;
-			}
-		}
-		
-		GameManager.Instance.favObj = this.gameObject;
-	
-	}
-	
-	public void MyIndex(){
-		GameManager.Instance.favTempIndex = (int)data.id;
-		GameManager.Instance.favMIndex = data.mainIndex;
-		GameManager.Instance.favRIndex = (int)data.innerIndex;
-		GameManager.Instance.favObj = this.gameObject;
-	}
-	
-	public void RemoveFavorite(){
-		
-		GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.RemoveAt(GameManager.Instance.favRIndex);
-		if(GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.Count==0){
-			GameManager.Instance.favorite.RemoveAt(GameManager.Instance.favMIndex);
-		}
-		Destroy(GameManager.Instance.favObj);
-	}
-	
-	void InitData()
-	{
-		spriteObjDict.Clear();
-		foreach (Sprite sp in spriteObjArray)
-		{
-			spriteObjDict[sp.name] = sp;
-		}
-	}
-	public Sprite GetSpriteByName(string spriteName)
-	{
-		Sprite ret = null;
-		if (spriteObjDict.TryGetValue(spriteName, out ret))
-		{
-			return ret;
-		}
-		return null;
 	}
 
 }

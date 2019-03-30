@@ -21,7 +21,7 @@ public class Game : BaseUI
 	public float chechTime;
     public bool startime = false;
 
-    public TextMesh TextTime;
+    public Text TextTime;
 	public string[] ss;
 	public string actualWord = string.Empty;
 	public string word = string.Empty;
@@ -99,6 +99,7 @@ public class Game : BaseUI
 					GameManager.Instance.atlasLoader.getAtlas(characters[w].ToString().ToUpper());
 				Slot.transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
 				Slot.GetComponent<Image>().enabled = true;
+				Slot.GetComponent<Outline>().enabled = false;
 			}
 		}
 	}
@@ -153,6 +154,12 @@ public class Game : BaseUI
 				GameManager.Instance.cardIndex = GameManager.Instance.mItemDataList.Count-1;
 				GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
 				startime = false;
+				List<RoundData> r = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData;
+				r[r.Count-1].mUsedRoundTime = sec.ToString();
+				r[r.Count-1].mCompleted = true;
+				r[r.Count-1].reCheck = true;
+				r[r.Count-1].mAnswer = slot.text;
+				r[r.Count-1].id = GameManager.Instance.currentRound;
 				return;
 			}
 		
@@ -162,12 +169,12 @@ public class Game : BaseUI
 			}
 			
 			GameManager.Instance.menuManager.PushMenu (UIManager.State.NewRound);//NextRound();
-			List<RoundData> r = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData;
-			r[r.Count-1].mUsedRoundTime = sec.ToString();
-			r[r.Count-1].mCompleted = true;
-			r[r.Count-1].reCheck = true;
-			r[r.Count-1].mAnswer = slot.text;
-			r[r.Count-1].id = GameManager.Instance.currentRound;
+			List<RoundData> m = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData;
+			m[m.Count-1].mUsedRoundTime = sec.ToString();
+			m[m.Count-1].mCompleted = true;
+			m[m.Count-1].reCheck = true;
+			m[m.Count-1].mAnswer = slot.text;
+			m[m.Count-1].id = GameManager.Instance.currentRound;
 			
 		}
 		else{
@@ -177,21 +184,30 @@ public class Game : BaseUI
 	}
 	
 	public bool isCorrectAnswer(){
+		GameObject wordSlotN = slotWords[characters.Length-3];
 		string[] ssize = slot.text.Split(new char[0]);
 		Debug.Log(ssize.Length-1);
 		Debug.Log(characters.Length);
 		bool isAnswerCorrect = true;
 		if(ssize.Length == characters.Length){
 			for(int i=0; i < characters.Length; i++){
+				
 				if(Char.ToLower(characters[i])!=Char.ToLower(ssize[i][0])){
 					isAnswerCorrect = false;
+					wordSlotN.transform.GetChild(i).gameObject.GetComponent<Outline>().enabled = true;
+				}
+				else{
+					wordSlotN.transform.GetChild(i).gameObject.GetComponent<Outline>().enabled = false;
 				}
 				Debug.Log(characters[i] + ": <> :"+ ssize[i][0]);
 			}
-			
 		}
 		else{
 			isAnswerCorrect = false;
+			for (int w = 0; w < wordSlotN.transform.childCount; w++)
+			{
+				wordSlotN.transform.GetChild(w).gameObject.GetComponent<Outline>().enabled = true;
+			}
 		}
 		
 		
@@ -275,7 +291,7 @@ public class Game : BaseUI
     void Update()
     {
 		if (GameManager.Instance.unlimited) {
-			TextTime.fontSize = 60;
+			TextTime.fontSize = 32;
 			TextTime.text = "Unlimited";
 			return;
 		}
