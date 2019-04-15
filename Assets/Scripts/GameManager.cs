@@ -49,7 +49,7 @@ public class GameManager : Singleton<GameManager>
 	
 	public GameObject topPopup;
 	public Player player;
-	
+	public Dictionary<string, List<string>> header;
 	
 	public void PopSetting(){
 		if(GameManager.Instance.menuManager.navigationStack.Count >=2){

@@ -8,6 +8,7 @@ using System;
 using UnityEngine.UI;
 using BestHTTP;
 using BestHTTP.JSON;
+using UnityEngine.EventSystems;
 
 	public class Friends : MonoBehaviour
 	{
@@ -171,7 +172,47 @@ using BestHTTP.JSON;
 					//mLoopListView.RefreshAllShownItem();
 				}
 				
-			}).Send(); 			
+			});
+			if(GameManager.Instance.header==null){
+				return;
+			}
+			for(int i = 0; i < GameManager.Instance.header.Count; ++i)
+			{
+				foreach(KeyValuePair<string, List<string>> item in GameManager.Instance.header)
+				{   	
+					//Debug.Log(string.Format("{0}: {1}", item.Key, item.Value[0]));
+					foreach(string val in item.Value){
+						//Debug.Log(val);
+					}
+					www.AddField(item.Key, item.Value[0]);
+			    }
+			}
+			www.Send(); 			
+		}
+		
+		public void Refresh(){
+			
+			
+			//mLoopListView.mTmpPooledItemList.Clear();
+			//mLoopListView.mPooledItemList.Clear();
+			//mLoopListView.mItemPoolList.Clear();
+			//mLoopListView.mItemPoolDict.Clear();
+			
+			mLoopListView.RecycleAllItem();
+			mLoopListView.ClearAllTmpRecycledItem();
+			mItemDataList.Clear();
+			pList.Clear();
+			for(int a = 0 ;  a < mLoopListView.transform.GetChild(1).GetChild(0).childCount-1; a++){
+				if(a>0 && mLoopListView.transform.GetChild(1).GetChild(0).GetChild(a).gameObject.name.Contains("Clone")){
+					
+					//Destroy(mLoopListView.transform.GetChild(1).GetChild(0).GetChild(a).gameObject);
+					//if(mLoopListView.transform.GetChild(1).GetChild(0).GetChild(a).gameObject!=null)
+						//Debug.Log(mLoopListView.transform.GetChild(1).GetChild(0).GetChild(a).gameObject);
+					mLoopListView.transform.GetChild(1).GetChild(0).GetChild(a).GetChild(3).gameObject.GetComponent<EventTrigger>().enabled = true;
+				}
+			}
+			//mLoopListView.RefreshAllShownItem();
+			
 		}
 		
 		
@@ -181,7 +222,7 @@ using BestHTTP.JSON;
 			if(gameObject.name != "My Friends"){
 				return;
 			}
-			HTTPRequest www = new HTTPRequest(new Uri(  GameManager.Instance.webURLPrefix + "pendingFriend?myId=" + GameManager.Instance.player._id), (request, response) => {
+			HTTPRequest www = new HTTPRequest(new Uri(  GameManager.Instance.webURLPrefix + "activeFriend?myId=" + GameManager.Instance.player._id), (request, response) => {
 				HTTPResponse res = (HTTPResponse)response;
 				if(res.IsSuccess){
 					Debug.Log(res.DataAsText);
@@ -277,7 +318,22 @@ using BestHTTP.JSON;
 					//mLoopListView.RefreshAllShownItem();
 				}
 				
-			}).Send(); 			
+			});
+			if(GameManager.Instance.header==null){
+				return;
+			}
+			for(int i = 0; i < GameManager.Instance.header.Count; ++i)
+			{
+				foreach(KeyValuePair<string, List<string>> item in GameManager.Instance.header)
+				{   	
+					//Debug.Log(string.Format("{0}: {1}", item.Key, item.Value[0]));
+					foreach(string val in item.Value){
+						//Debug.Log(val);
+					}
+					www.AddField(item.Key, item.Value[0]);
+				}
+			}
+			www.Send(); 			
 		}
 		
 		public void DoRefreshDataSource(InputField data)
@@ -315,7 +371,22 @@ using BestHTTP.JSON;
 					//mLoopListView.RefreshAllShownItem();
 				}
 				
-			}).Send(); 			
+			});
+			if(GameManager.Instance.header==null){
+				return;
+			}
+			for(int i = 0; i < GameManager.Instance.header.Count; ++i)
+			{
+				foreach(KeyValuePair<string, List<string>> item in GameManager.Instance.header)
+				{   	
+					//Debug.Log(string.Format("{0}: {1}", item.Key, item.Value[0]));
+					foreach(string val in item.Value){
+						//Debug.Log(val);
+					}
+					www.AddField(item.Key, item.Value[0]);
+				}
+			}
+			www.Send(); 		
 		}
 		
 		public void Search(InputField data)
@@ -354,7 +425,22 @@ using BestHTTP.JSON;
 					//mLoopListView.RefreshAllShownItem();
 				}
 				
-			}).Send(); 			
+			});
+			if(GameManager.Instance.header==null){
+				return;
+			}
+			for(int i = 0; i < GameManager.Instance.header.Count; ++i)
+			{
+				foreach(KeyValuePair<string, List<string>> item in GameManager.Instance.header)
+				{   	
+					//Debug.Log(string.Format("{0}: {1}", item.Key, item.Value[0]));
+					foreach(string val in item.Value){
+						//Debug.Log(val);
+					}
+					www.AddField(item.Key, item.Value[0]);
+				}
+			}
+			www.Send(); 	
 		}
 		public void Update()
 		{
@@ -417,6 +503,7 @@ using BestHTTP.JSON;
 				item.IsInitHandlerCalled = true;
 				itemScript.Init();
 			}
+			if(itemScript!=null)
 			itemScript.SetItemData(itemData,index);
 			return item;
 		}

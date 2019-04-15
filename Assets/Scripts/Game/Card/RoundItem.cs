@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using SuperScrollView;
+using TMPro;
 
 public class RoundItem : MonoBehaviour {
 	
 	
 	public Text mTitle;
 	public Image mStatus;
-	public Text mBody;
+	public TextMeshProUGUI mBody;
 	public GameObject mContentRootObj;
 	public int mItemDataIndex = -1;
 	public LoopListView2 mLoopListView;
@@ -25,7 +26,7 @@ public class RoundItem : MonoBehaviour {
 	
 	public void SetItemData(RoundData itemData,int itemIndex, bool isHistory)
 	{
-		underline = mBody.transform.GetChild(0).GetComponent<Text>();
+		//underline = mBody.transform.GetChild(0).GetComponent<Text>();
 		data = itemData;
 		data.id = itemIndex;
 		mItemDataIndex = itemIndex;
@@ -42,10 +43,10 @@ public class RoundItem : MonoBehaviour {
 			mTitle.text = "Wack " + data.time.Substring(0, 8)  + " (Unlimited)";
 		}
 		string dataStr = data.mSenence.Replace("__","");
-		mBody.text =  dataStr +data.mAnswer;
+		mBody.text =  dataStr +"<u>" +data.mAnswer+"</u>";
 		
 		
-		underline.text = "<color=white>"; 
+		//underline.text = "<color=white>"; 
 		
 		
 		int totalLength = dataStr.Length-1;
@@ -54,17 +55,17 @@ public class RoundItem : MonoBehaviour {
 			totalLength = totalLength - 5;
 		}
 		for(int i=0; i<totalLength;i++){
-			underline.text += "_";
+			//underline.text += "_";
 		}
 		
-		underline.text += "</color>";
+		//underline.text += "</color>";
 		
 		if(data.mAnswer!=null){
-			underline.text += "<color=black>"; 
+			//underline.text += "<color=black>"; 
 		for(int i=0; i<data.mAnswer.Length-1;i++){
-			underline.text += "_";
+			//underline.text += "_";
 		}
-			underline.text += "</color>";
+			//underline.text += "</color>";
 		}
 		
 		

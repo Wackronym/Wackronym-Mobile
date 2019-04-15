@@ -95,6 +95,7 @@ namespace MaterialUI
 	            if(id == 0){
 	            	
 	            	if(transform.name == "My Friends"){
+	            		GameManager.Instance.BroadcastMessage("Refresh");
 	            		GameManager.Instance.BroadcastMessage("GetAllFriendsList");
 	            	}
 	            }
@@ -112,15 +113,23 @@ namespace MaterialUI
 		            	GameManager.Instance.activeTabIndex = id;
 	            	}
 	            	if(transform.name == "Friend Requests"){
+	            		GameManager.Instance.BroadcastMessage("Refresh");
 	            		GameManager.Instance.BroadcastMessage("GetAllPendingFriends");
 	            	}
 	            }
 	            else if(id == 2){
 	            	if(transform.name == "Friend Requests"){
+	            		GameManager.Instance.BroadcastMessage("Refresh");
 	            		GameManager.Instance.BroadcastMessage("GetAllPendingFriends");
+	            	}
+	            	
+	            	if(transform.name == "Add Friends"){
+	            		GameManager.Instance.BroadcastMessage("Refresh");
+	            		
 	            	}
 	            	if(transform.name == "Favorites"){
 	            		if(SaveGame.Load<List<CardData>> ( "Favorites" )!=null){
+	            			GameManager.Instance.dummyFavorite.Clear();
             				GameManager.Instance.favorite = SaveGame.Load<List<CardData>> ( "Favorites" );
             				for(int i=0;i< GameManager.Instance.favorite.Count;i++){
             					CardData c = GameManager.Instance.favorite[i];
@@ -141,7 +150,7 @@ namespace MaterialUI
 	            		}
             	}
 	            else if(id == 3){
-	            	
+	            	GameManager.Instance.BroadcastMessage("Refresh");
 	            	GameManager.Instance.BroadcastMessage("GetAllPendingFriends");
 	            	GameManager.Instance.BroadcastMessage("GetAllFriendsList");
 	            }

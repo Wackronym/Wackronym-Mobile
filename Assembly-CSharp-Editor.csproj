@@ -56,6 +56,7 @@
      <Compile Include="Assets\BayatGames\SaveGamePro\Editor\SaveGameSettingsWindow.cs" />
      <Compile Include="Assets\BayatGames\SaveGamePro\Editor\SaveGameTypeCreator.cs" />
      <Compile Include="Assets\BayatGames\SaveGamePro\Editor\Utilities\IntegrationUtils.cs" />
+     <Compile Include="Assets\ExtendedText\Editor\ExtendedTextEditor.cs" />
      <Compile Include="Assets\MaterialUI\Editor\Custom Inspectors\CircularProgressIndicatorEditor.cs" />
      <Compile Include="Assets\MaterialUI\Editor\Custom Inspectors\DragEventSenderEditor.cs" />
      <Compile Include="Assets\MaterialUI\Editor\Custom Inspectors\EasyTweenEditor.cs" />
@@ -113,6 +114,7 @@
      <Compile Include="Assets\MaterialUI\Editor\Tools\Vector Image Manager\VectorImageManagerWindow.cs" />
      <Compile Include="Assets\MaterialUI\Editor\Tools\Vector Image Manager\VectorImagePickerWindow.cs" />
      <Compile Include="Assets\MaterialUI\Utils\Editor\UnityZip\Zip.cs" />
+     <Compile Include="Assets\Scripts\Editor\SubmitInputFieldEditor.cs" />
      <Compile Include="Assets\SuperScrollView\Editor\LoopListViewEditor2.cs" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />

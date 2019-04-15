@@ -30,8 +30,8 @@ namespace SuperScrollView
         int mInitCreateCount = 1;
         float mPadding = 0;
         float mStartPosOffset = 0;
-        List<LoopListViewItem2> mTmpPooledItemList = new List<LoopListViewItem2>();
-        List<LoopListViewItem2> mPooledItemList = new List<LoopListViewItem2>();
+	    public List<LoopListViewItem2> mTmpPooledItemList = new List<LoopListViewItem2>();
+        public List<LoopListViewItem2> mPooledItemList = new List<LoopListViewItem2>();
         static int mCurItemIdCount = 0;
         RectTransform mItemParent = null;
         public ItemPool()
@@ -186,8 +186,8 @@ namespace SuperScrollView
             }
         }
 
-        Dictionary<string, ItemPool> mItemPoolDict = new Dictionary<string, ItemPool>();
-        List<ItemPool> mItemPoolList = new List<ItemPool>();
+	    public  Dictionary<string, ItemPool> mItemPoolDict = new Dictionary<string, ItemPool>();
+	    public List<ItemPool> mItemPoolList = new List<ItemPool>();
         [SerializeField]
         List<ItemPrefabConfData> mItemPrefabDataList = new List<ItemPrefabConfData>();
 
@@ -936,7 +936,7 @@ namespace SuperScrollView
         }
 
 
-        void ClearAllTmpRecycledItem()
+	    public void ClearAllTmpRecycledItem()
         {
             int count = mItemPoolList.Count;
             for(int i = 0;i<count;++i)
@@ -946,7 +946,7 @@ namespace SuperScrollView
         }
 
 
-        void RecycleAllItem()
+	    public void RecycleAllItem()
         {
             foreach (LoopListViewItem2 item in mItemList)
             {

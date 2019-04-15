@@ -25,6 +25,7 @@ using UnityEngine.UI;
 		
 		void Awake()
 		{
+			transform.parent.GetChild(3).gameObject.SetActive(false);
 			Init();
 			InitData();
 			foreach(Toggle t in GetComponentsInChildren<Toggle>()){
@@ -37,11 +38,13 @@ using UnityEngine.UI;
 		
 		void OnEnable(){
 			//GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive(false);
+			transform.parent.GetChild(3).gameObject.SetActive(false);
 		}
 		void Start()
 		{
 			mLoopListView.InitListView(TotalItemCount, InitScrollView);
 			mLoopListView.mOnEndDragAction = OnEndDrag;
+			transform.parent.GetChild(3).gameObject.SetActive(false);
 		
 		}
 		
@@ -69,6 +72,7 @@ using UnityEngine.UI;
 				return;
 			}
 			mLoopListView.OnItemSizeChanged(item.ItemIndex);
+			transform.parent.GetChild(3).gameObject.SetActive(false);
 		}
 		void InitData()
 		{
@@ -77,11 +81,13 @@ using UnityEngine.UI;
 			{
 				spriteObjDict[sp.name] = sp;
 			}
+			transform.parent.GetChild(3).gameObject.SetActive(false);
 		}
 		
 		public void Init()
 		{
 			DoRefreshDataSource();
+			transform.parent.GetChild(3).gameObject.SetActive(false);
 		}
 		
 		public void SetDataTotalCount(int count)
@@ -110,7 +116,7 @@ using UnityEngine.UI;
 		
 		public void SaveData(){
 			MainMenu();
-			
+			transform.parent.GetChild(3).gameObject.SetActive(false);
 		}
 		public void MainMenu(){
 			

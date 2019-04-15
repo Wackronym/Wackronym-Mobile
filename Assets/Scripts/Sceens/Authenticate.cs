@@ -26,6 +26,8 @@ public class Authenticate : BaseUI
 	[SerializeField] public InputField reg_Text_username;
 	[SerializeField] public InputField forget_Text_email;
 	public Text statusAuth;
+	
+	
 	#endregion 
 	void Start () {
 		transform.parent = GameManager.Instance.topPopup.transform;
@@ -33,6 +35,17 @@ public class Authenticate : BaseUI
 	}
 	
 	public void GoLogIn() {
+		
+		string user = "";
+		string pass = "";
+			
+		//user = "ggg@gmail.com";
+		//pass = "!N123456789n";
+			
+		user = "frtnauma@gmail.com";
+		pass = "n123456789!N";
+		
+		
 		isConnecting = true;
 		loginHudIndex = 0;
 		//Gdx.input.setOnscreenKeyboardVisible(false);
@@ -42,7 +55,7 @@ public class Authenticate : BaseUI
 			if(res.IsSuccess){
 				string request_result = res.DataAsText;
 				if (request_result.Length > 10) {	
-					Debug.Log( res.DataAsText);
+					GameManager.Instance.header =  res.Headers;
 					Debug.Log(res.Data);
 					//GameManager.Instance.player = Json.Decode(request_result) as Player;
 					Dictionary<string, object> b = Json.Decode(request_result) as Dictionary<string, object>;
@@ -84,8 +97,16 @@ public class Authenticate : BaseUI
 						p.RefresUI();
 					}
 					
-					PlayerPrefs.SetString("usernameOrEmail", login_Text_email.text);
-					PlayerPrefs.SetString("password", login_Text_password.text);
+					
+					
+					if(Application.isEditor){
+						PlayerPrefs.SetString("usernameOrEmail", user);
+						PlayerPrefs.SetString("password", pass);
+					}
+					else{
+						PlayerPrefs.SetString("usernameOrEmail", login_Text_email.text);
+						PlayerPrefs.SetString("password", login_Text_password.text);
+					}
 				}
 			}
 			else{
@@ -96,11 +117,9 @@ public class Authenticate : BaseUI
 		});
 		
 		if(Application.isEditor){
-			www.AddField("usernameOrEmail", "ggg@gmail.com");
-			www.AddField("password", "!N123456789n");
-			
-			//www.AddField("usernameOrEmail", "frtnauma@gmail.com");
-			//www.AddField("password", "n123456789!N");
+
+			www.AddField("usernameOrEmail", user);
+			www.AddField("password", pass);
 		}
 		else{
 			www.AddField("usernameOrEmail", login_Text_email.text);

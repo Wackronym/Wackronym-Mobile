@@ -40,9 +40,11 @@ public class Menu : BaseUI {
 			
 			if(res.IsSuccess){
 				string request_result = res.DataAsText;
-				if (request_result.Length > 10) {	
+				if (request_result.Length > 10) {
+					GameManager.Instance.header =  res.Headers;
 					Debug.Log( res.DataAsText);
 					Debug.Log(res.Data);
+					
 					//GameManager.Instance.player = Json.Decode(request_result) as Player;
 					Dictionary<string, object> b = Json.Decode(request_result) as Dictionary<string, object>;
 					GameManager.Instance.player = new Player();
@@ -90,9 +92,9 @@ public class Menu : BaseUI {
 		});
 		
 		
-			www.AddField("usernameOrEmail", PlayerPrefs.GetString("usernameOrEmail"));
-			www.AddField("password", PlayerPrefs.GetString("password"));
-			www.Send();
+		www.AddField("usernameOrEmail", PlayerPrefs.GetString("usernameOrEmail"));
+		www.AddField("password", PlayerPrefs.GetString("password"));
+		www.Send();
 		
 		
 		

@@ -38,6 +38,7 @@ public class Profile : BaseUI {
 			var tex = new Texture2D(0, 0);
 			HTTPResponse res = (HTTPResponse)response;
 			tex.LoadImage(res.Data);
+			if(profilePic!=null)
 			profilePic.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f,0.5f), 40);
 		}).Send();
 		firstName.text = GameManager.Instance.player.firstName;
