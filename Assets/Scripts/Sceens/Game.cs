@@ -136,7 +136,7 @@ public class Game : BaseUI
 		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate = DateTime.Now.Date.ToString();
 		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration = chechTime.ToString();
 		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mId = GameManager.Instance.mItemDataList.Count-1;
-		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mName = PlayerPrefs.GetString("mName","Guest");
+		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mName = PlayerPrefs.GetString("mName","Solo");
 		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mPic = "";
 		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mChecked = false;
 		RoundData rData = new RoundData();

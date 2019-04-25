@@ -1712,7 +1712,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: \ue5cb
   m_Size: 49
-  m_ScaledSize: 91.907005
+  m_ScaledSize: 91.912674
   m_SizeMode: 0
   m_MaterialUiScaler: {fileID: 2056192394}
   m_VectorImageData:
@@ -2490,8 +2490,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MatchOrientationToScreen: 1
-  m_ScaleFactor: 1.8756531
-  m_LastResolution: {x: 359, y: 638}
+  m_ScaleFactor: 1.8757688
+  m_LastResolution: {x: 305, y: 542}
 --- !u!114 &2056192396
 MonoBehaviour:
   m_ObjectHideFlags: 0

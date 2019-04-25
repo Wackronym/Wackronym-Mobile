@@ -104,7 +104,7 @@ using UnityEngine.UI;
 				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10);// + " | Duration: Unlimited"; 
 			}
 			
-			mName.text = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mName;
+			mName.text = "Mode: "+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mName;
 			mRound.text = "Total Rounds: "+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData.Count.ToString();
 			base.AddMouseDownEvent();
 		}
