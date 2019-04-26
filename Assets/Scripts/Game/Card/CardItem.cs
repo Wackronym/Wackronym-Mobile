@@ -56,6 +56,7 @@ public class CardItem : MonoBehaviour {
             mIcon.sprite = iconForItem[2];
             itemObj.GetComponent<Image>().color = colorForItem[2];
         }
+        itemObj.transform.GetComponent<Button>().onClick.RemoveAllListeners();
         itemObj.transform.GetComponent<Button>().onClick.AddListener(OnBtnClicked);
 
         //mNameText.text 

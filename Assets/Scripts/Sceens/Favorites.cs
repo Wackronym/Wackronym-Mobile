@@ -141,6 +141,7 @@ using UnityEngine.UI;
 			//get a new item. Every item can use a different prefab, the parameter of the NewListViewItem is the prefab’name. 
 			//And all the prefabs should be listed in ItemPrefabList in LoopListView2 Inspector Setting
 			LoopListViewItem2 item = listView.NewListViewItem("RoundItem");
+            Debug.Log("item name = "+item.name);
 			RoundItem itemScript = item.GetComponent<RoundItem>();
 			if (item.IsInitHandlerCalled == false)
 			{

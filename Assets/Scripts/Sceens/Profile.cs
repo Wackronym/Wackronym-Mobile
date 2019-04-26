@@ -46,8 +46,6 @@ public class Profile : BaseUI {
 		email.text = GameManager.Instance.player.email;
 		username.text = GameManager.Instance.player.username;
 		diplayName.text = GameManager.Instance.player.displayName;
-
-		
 	}
 	
 	public void UpdateProfile(){

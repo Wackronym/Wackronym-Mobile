@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using SuperScrollView;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class RoundItem : MonoBehaviour {
 
     //Ghilman
     public Text mBodyText;
-    public Color mBodyAnsColor;
+    public Toggle toggle;
+    //public Button shareButton;
     //Ghilman
     public RoundData data;
 
@@ -38,114 +40,145 @@ public class RoundItem : MonoBehaviour {
         string[] srtingParts = data.mSenence.Split("_"[0]);
         string stringToShow = srtingParts[0];
         mBodyText.text = stringToShow+ " <color=Blue>"+data.mAnswer+"</color> "+ srtingParts[srtingParts.Length-1];
-        //Ghilman
+        
+        if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
+        {
+            if (isHistory)
+            {
+                toggle.enabled = true;
+            }
+            else
+            {
+                toggle.enabled = false;
+                toggle.isOn = true;
+            }
+        }
+        else
+        {
+            Debug.Log("there is a other thing not main menu");
+        }
+        //shareButton.onClick.RemoveAllListeners();
+       // shareButton.onClick.AddListener(ShareButtonCall);
+    }
 
-        //underline = mBody.transform.GetChild(0).GetComponent<Text>();
-
-        //mItemDataIndex = itemIndex;
-        //if(data.mTotalRoundTime.Equals("90")){
-        //	mTitle.text = "Wack " + data.time.Substring(0, 8)  + " ("+data.mTotalRoundTime+"s)";
-        //}
-        //else if( data.mTotalRoundTime.Equals("60")){
-        //	mTitle.text = "Wack " + data.time.Substring(0, 8)  + " ("+data.mTotalRoundTime+"s)";
-        //}
-        //else if( data.mTotalRoundTime.Equals("30")){
-        //	mTitle.text = "Wack " + data.time.Substring(0, 8)  + " ("+data.mTotalRoundTime+"s)";
-        //}
-        //else{
-        //	//mTitle.text = "Wack " + data.time.Substring(0, 8)  + " (Unlimited)";
-        //}
-        //string dataStr = data.mSenence.Replace("__","__");
-
-        //mBody.text =  dataStr +"<u>" +data.mAnswer+"</u>";
-
-
-        //underline.text = "<color=white>"; 
-
-
-        //int totalLength = dataStr.Length-1;
-
-        //if(data.mAnswer!=null){
-        //	totalLength = totalLength - 5;
-        //}
-        //for(int i=0; i<totalLength;i++){
-        //underline.text += "_";
-        //}
-
-        //underline.text += "</color>";
-
-        //if(data.mAnswer!=null){
-        //underline.text += "<color=black>"; 
-        //for(int i=0; i<data.mAnswer.Length-1;i++){
-        //underline.text += "_";
-        //}
-        //underline.text += "</color>";
-        //}
+    public void ShareButtonCall()
+    {
+        Debug.Log("Share button is pressed");
+    }
+    //Ghilman
 
 
-        //if(data.mCompleted){
-        //mStatus.sprite = GetSpriteByName("checked");	
-        //}
-        //else{
-        //mStatus.sprite = GetSpriteByName("unchecked");	
-        //}
+    //public void ReEnable(){
+    //	if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
+    //		Toggle t = GetComponentInChildren<Toggle>();
+    //		if(t!=null){
+    //			t.isOn = true;
+    //		}
+    //	}
+    //	GameManager.Instance.favObj = this.gameObject;
 
-       // if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
-		//	Toggle t = GetComponentInChildren<Toggle>();
-		//	if(t!=null){
-				//t.isOn = true;
-				//t.enabled = false;	
-		//		if(isHistory){
-					//t.gameObject.SetActive(false);
-		//		}
-		//	}
-			
-		//}
-	}
-	
-	//public void ReEnable(){
-	//	if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
-	//		Toggle t = GetComponentInChildren<Toggle>();
-	//		if(t!=null){
-	//			t.isOn = true;
-	//		}
-	//	}
-	//	GameManager.Instance.favObj = this.gameObject;
-	
-//	}
-	
-	//public void MyIndex(){
-//		GameManager.Instance.favTempIndex = (int)data.id;
-//		GameManager.Instance.favMIndex = data.mainIndex;
-//		GameManager.Instance.favRIndex = (int)data.innerIndex;
-//		GameManager.Instance.favObj = this.gameObject;
-//	}
-	
-	//public void RemoveFavorite(){
-		
-		//GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.RemoveAt(GameManager.Instance.favRIndex);
-		//if(GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.Count==0){
-		//	GameManager.Instance.favorite.RemoveAt(GameManager.Instance.favMIndex);
-		//}
-		//Destroy(GameManager.Instance.favObj);
-	//}
-	
-	//void InitData()
-	//{
-	//	spriteObjDict.Clear();
-	//	foreach (Sprite sp in spriteObjArray)
-	//	{
-	//		spriteObjDict[sp.name] = sp;
-	//	}
-	//}
-	//public Sprite GetSpriteByName(string spriteName)
-	//{
-	//	Sprite ret = null;
-	//	if (spriteObjDict.TryGetValue(spriteName, out ret))
-	//	{
-	//		return ret;
-	//	}
-	//	return null;
-	//}
+    //	}
+
+    //public void MyIndex(){
+    //		GameManager.Instance.favTempIndex = (int)data.id;
+    //		GameManager.Instance.favMIndex = data.mainIndex;
+    //		GameManager.Instance.favRIndex = (int)data.innerIndex;
+    //		GameManager.Instance.favObj = this.gameObject;
+    //	}
+
+    //public void RemoveFavorite(){
+
+    //GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.RemoveAt(GameManager.Instance.favRIndex);
+    //if(GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.Count==0){
+    //	GameManager.Instance.favorite.RemoveAt(GameManager.Instance.favMIndex);
+    //}
+    //Destroy(GameManager.Instance.favObj);
+    //}
+
+    //void InitData()
+    //{
+    //	spriteObjDict.Clear();
+    //	foreach (Sprite sp in spriteObjArray)
+    //	{
+    //		spriteObjDict[sp.name] = sp;
+    //	}
+    //}
+    //public Sprite GetSpriteByName(string spriteName)
+    //{
+    //	Sprite ret = null;
+    //	if (spriteObjDict.TryGetValue(spriteName, out ret))
+    //	{
+    //		return ret;
+    //	}
+    //	return null;
+    //}
 
 }
+
+
+
+//if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
+//{
+//Toggle t = GetComponentInChildren<Toggle>();
+//        if (t != null)
+//        {
+//            t.isOn = true;
+//            t.enabled = false;
+//            if (isHistory)
+//            {
+//                 //t.gameObject.SetActive(false);
+//             }
+//         }
+
+//     }
+
+
+//underline = mBody.transform.GetChild(0).GetComponent<Text>();
+
+//mItemDataIndex = itemIndex;
+//if(data.mTotalRoundTime.Equals("90")){
+//	mTitle.text = "Wack " + data.time.Substring(0, 8)  + " ("+data.mTotalRoundTime+"s)";
+//}
+//else if( data.mTotalRoundTime.Equals("60")){
+//	mTitle.text = "Wack " + data.time.Substring(0, 8)  + " ("+data.mTotalRoundTime+"s)";
+//}
+//else if( data.mTotalRoundTime.Equals("30")){
+//	mTitle.text = "Wack " + data.time.Substring(0, 8)  + " ("+data.mTotalRoundTime+"s)";
+//}
+//else{
+//	//mTitle.text = "Wack " + data.time.Substring(0, 8)  + " (Unlimited)";
+//}
+//string dataStr = data.mSenence.Replace("__","__");
+
+//mBody.text =  dataStr +"<u>" +data.mAnswer+"</u>";
+
+
+//underline.text = "<color=white>"; 
+
+
+//int totalLength = dataStr.Length-1;
+
+//if(data.mAnswer!=null){
+//	totalLength = totalLength - 5;
+//}
+//for(int i=0; i<totalLength;i++){
+//underline.text += "_";
+//}
+
+//underline.text += "</color>";
+
+//if(data.mAnswer!=null){
+//underline.text += "<color=black>"; 
+//for(int i=0; i<data.mAnswer.Length-1;i++){
+//underline.text += "_";
+//}
+//underline.text += "</color>";
+//}
+
+
+//if(data.mCompleted){
+//mStatus.sprite = GetSpriteByName("checked");	
+//}
+//else{
+//mStatus.sprite = GetSpriteByName("unchecked");	
+//}
