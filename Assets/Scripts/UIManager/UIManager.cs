@@ -286,7 +286,7 @@ public class UIManager : MonoBehaviour {
 		for (int i = 0; i < menus.Length; i++)
 		{
 			BaseUI bm = menus[i];
-			Debug.Log("Creating Menu " + bm.state);
+			//Debug.Log("Creating Menu " + bm.state);
 			menuTable.Add(bm.state, bm);
 			//bm.gameObject.SetActive(true);
 			bm.gameObject.SetActive(false);

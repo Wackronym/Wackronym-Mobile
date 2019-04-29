@@ -40,7 +40,12 @@ public class Game : BaseUI
 	public float totalRound;
 	char[] characters;
 
-	void Awake(){
+    //Ghilman 
+    private TouchScreenKeyboard keyboard;
+    public Text textText;
+    //Ghilman
+
+    void Awake(){
 		GameManager.Instance.errorPopup = errorPopup;
 	}
 	public void ShowKeyboard(){
@@ -105,9 +110,12 @@ public class Game : BaseUI
 	}
 	
 	void OnEnable()
-	{	
-		
-		s = GameManager.Instance.client.GetRandomS();
+	{
+        //Ghilman
+        OpenNativeKeyboard();
+        //Ghilman
+
+        s = GameManager.Instance.client.GetRandomS();
 		sentence.text = s.puzzle;
 		totalRound = PlayerPrefs.GetInt("wRound", 1);
 		ring.fillAmount = 0;
@@ -365,5 +373,14 @@ public class Game : BaseUI
     {
         Coins.enabled = false;
         Coins.enabled = true;
+    }
+
+    //Ghilman
+    void OpenNativeKeyboard()
+    {
+        Debug.Log("open the keyboard");
+        keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default,true,true,false,false);
+        textText.text = TouchScreenKeyboard.area.ToString();
+        slot.text = keyboard.text;
     }
 }
