@@ -40,9 +40,10 @@ public class Game : BaseUI
 	public float totalRound;
 	char[] characters;
 
-    //Ghilman 
-    private TouchScreenKeyboard keyboard;
-    public Text textText;
+    //Ghilman
+    public InputField mainTextInputField; 
+    public Text textText1;
+    public Text textText2;
     //Ghilman
 
     void Awake(){
@@ -69,7 +70,10 @@ public class Game : BaseUI
 
     void Start()
 	{
-		
+        //Ghilman
+        OpenNativeKeyboard();
+        //Ghilman
+
         Time.timeScale = 1;
 	    CancelInvoke("DelayTime");
 	    
@@ -111,9 +115,7 @@ public class Game : BaseUI
 	
 	void OnEnable()
 	{
-        //Ghilman
-        OpenNativeKeyboard();
-        //Ghilman
+      
 
         s = GameManager.Instance.client.GetRandomS();
 		sentence.text = s.puzzle;
@@ -298,7 +300,8 @@ public class Game : BaseUI
 
     void Update()
     {
-		if (GameManager.Instance.unlimited) {
+
+        if (GameManager.Instance.unlimited) {
 			TextTime.fontSize = 32;
 			TextTime.text = "Unlimited";
 			return;
@@ -378,9 +381,28 @@ public class Game : BaseUI
     //Ghilman
     void OpenNativeKeyboard()
     {
-        Debug.Log("open the keyboard");
-        keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default,true,true,false,false);
-        textText.text = TouchScreenKeyboard.area.ToString();
-        slot.text = keyboard.text;
+        mainTextInputField.Select();
+        mainTextInputField.onValidateInput += delegate (string input, int charIndex, char addedChar) { return MyValidate(addedChar); };
     }
+    private char MyValidate(char charToValidate)
+    {
+        string allowedSpecialChars = ", . ? : ; ! ";
+        if (allowedSpecialChars.Contains(charToValidate.ToString()) || Char.IsLetterOrDigit(charToValidate))
+        {
+            if (Char.IsDigit(charToValidate))
+            {
+                charToValidate = '\0';
+            }
+        }
+        else
+        {
+            charToValidate = '\0';
+        }
+        return charToValidate;
+    }
+    public void SubmitText()
+    {
+        ValidateAnswer();
+    }
+    //Ghilman
 }
