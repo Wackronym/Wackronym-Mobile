@@ -5,6 +5,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
+//Ghilman
+public enum AuthenticateState
+{
+    Login,
+    UpdateProfile,
+    Signup,
+    changePassword,
+}
+//Ghilman
+
 public class UIManager : MonoBehaviour {
 
 	public enum Mode
@@ -29,12 +39,11 @@ public class UIManager : MonoBehaviour {
         Ads = 12,
 		Profile = 13,
     }
+   
 
-	#region Variables
-
-	public BaseUI[] menus = null;
+    #region Variables
+    public BaseUI[] menus = null;
 	public UIManager.Mode mode = Mode.Prefabs;
-
 	public State initialState = State.Splash;
 	public State currentState = State.Splash;
 	public State previousState = State.Splash;
@@ -47,11 +56,8 @@ public class UIManager : MonoBehaviour {
 	private bool isUIStateDirty = false;
 	private bool isBackBtnPressed = false;
 	private bool applicationIsQuitting = false;
-
-
-	#endregion Variables
-
-	void Awake() 
+    #endregion Variables
+    void Awake() 
 	{
 		Screen.fullScreen = true;
 		currentState = initialState;

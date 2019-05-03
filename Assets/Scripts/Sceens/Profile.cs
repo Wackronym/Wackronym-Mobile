@@ -6,20 +6,21 @@ using BestHTTP;
 using System;
 
 public class Profile : BaseUI {
-
-	public Text diplayName;
+    
 	public InputField firstName;
 	public InputField lastName;
 	public InputField email;
 	public InputField username;
 	public Image profilePic;
 	
-	public Text status;
 	void Start () {
 		transform.parent = GameManager.Instance.topPopup.transform;
 		if(GameManager.Instance.player.username==""){
 			if(GameManager.Instance.menuManager.NavigationStackPeek() == UIManager.State.Profile){
-				GameManager.Instance.menuManager.PushMenu(UIManager.State.Authenticate);
+                //Ghilman
+                 GameManager.Instance.authenticateState = AuthenticateState.Login; 
+                //Ghilman
+                GameManager.Instance.menuManager.PushMenu(UIManager.State.Authenticate);
 			}
 		}
 		else{
@@ -41,21 +42,30 @@ public class Profile : BaseUI {
 			if(profilePic!=null)
 			profilePic.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f,0.5f), 40);
 		}).Send();
-		firstName.text = GameManager.Instance.player.firstName;
-		lastName.text = GameManager.Instance.player.lastName;
-		email.text = GameManager.Instance.player.email;
+
+        Debug.Log("user is login");
+		firstName.text = "First Name: "+GameManager.Instance.player.firstName;
+		lastName.text = "Last Name: "+GameManager.Instance.player.lastName;
+		email.text = "Email : "+GameManager.Instance.player.email;
 		username.text = GameManager.Instance.player.username;
-		diplayName.text = GameManager.Instance.player.displayName;
 	}
-	
-	public void UpdateProfile(){
-		
-	}
-	
+
 	public void LogOut(){
 		GameManager.Instance.player.username = "";
 		PlayerPrefs.DeleteKey("usernameOrEmail");
 		PlayerPrefs.DeleteKey("password");
 		GameManager.Instance.menuManager.PopMenu();
 	}
+    //Ghilman
+    public void OnCloseButtonClick()
+    {
+        GameManager.Instance.menuManager.PopMenu();
+    }
+
+    public void OnEditProfileButtonClick()
+    {
+        GameManager.Instance.authenticateState = AuthenticateState.UpdateProfile;
+        GameManager.Instance.menuManager.PushMenu(UIManager.State.Authenticate);
+    }
+    //Ghilman
 }

@@ -40,7 +40,9 @@ public class RoundItem : MonoBehaviour {
         string[] srtingParts = data.mSenence.Split("_"[0]);
         string stringToShow = srtingParts[0];
         mBodyText.text = stringToShow+ " <color=Blue>"+data.mAnswer+"</color> "+ srtingParts[srtingParts.Length-1];
-        
+
+        Debug.Log("what is itemData.reCheck" + itemData.reCheck);
+
         if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
         {
             if (isHistory)
@@ -57,10 +59,12 @@ public class RoundItem : MonoBehaviour {
         {
             Debug.Log("there is a other thing not main menu");
         }
-        //shareButton.onClick.RemoveAllListeners();
-       // shareButton.onClick.AddListener(ShareButtonCall);
-    }
+        //Ghilman 
 
+        //shareButton.onClick.RemoveAllListeners();
+        // shareButton.onClick.AddListener(ShareButtonCall);
+    }
+    //Ghilman 
     public void ShareButtonCall()
     {
         Debug.Log("Share button is pressed");

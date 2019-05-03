@@ -57,7 +57,7 @@ using UnityEngine.UI;
 		public void DoRefreshDataSource()
 		{
 			//SaveGame.Save ( "history", history );
-			Debug.Log("Called");
+			//Debug.Log("Called");
 			
 			if(GameManager.Instance.history==null){
 				return;

@@ -90,7 +90,7 @@ namespace MaterialUI
             {
 	            // m_TabView.TabItemPointerDown(id);
 	            GameManager.Instance.activeTabIndex = 0;
-	            Debug.Log(id);
+	            //Debug.Log(id);
 	            m_TabView.SetPage(id);
 	            if(id == 0){
 	            	
@@ -108,7 +108,7 @@ namespace MaterialUI
 	            		History h = GameManager.Instance.GetComponentInChildren<History>(true);
 		            	
 		            	h.enabled = true;
-		            	Debug.Log(h.name);
+		            	//Debug.Log(h.name);
 		            	h.DoRefreshDataSource();
 		            	GameManager.Instance.activeTabIndex = id;
 	            	}

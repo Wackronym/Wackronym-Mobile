@@ -50,8 +50,12 @@ public class GameManager : Singleton<GameManager>
 	public GameObject topPopup;
 	public Player player;
 	public Dictionary<string, List<string>> header;
-	
-	public void PopSetting(){
+
+    //Ghilman
+    public AuthenticateState authenticateState = AuthenticateState.Login;
+    //Ghilman
+
+    public void PopSetting(){
 		if(GameManager.Instance.menuManager.navigationStack.Count >=2){
 			GameManager.Instance.menuManager.PopMenu();
 		}

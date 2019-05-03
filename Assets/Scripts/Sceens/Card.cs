@@ -76,12 +76,12 @@ using UnityEngine.UI;
 		{
 			Init();
 			InitData();
-			foreach(Toggle t in GetComponentsInChildren<Toggle>()){
-				if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
-					t.enabled = false;	
-				}
+			//foreach(Toggle t in GetComponentsInChildren<Toggle>()){
+			//	if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
+			//		t.enabled = false;	
+			//	}
 				
-			}
+			//}
 		}
 		
 		void OnEnable(){
@@ -154,81 +154,90 @@ using UnityEngine.UI;
 			MainMenu();
 			
 		}
-		public void MainMenu(){
-			indexRemove= new List<int>();
-			CardData c = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1];
-			foreach(Toggle t in GetComponentsInChildren<Toggle>(true)){
-				if(t.isOn){
-					RoundItem item = t.transform.parent.GetComponent<RoundItem>();
-					foreach(RoundData d in c.rData){
-						if(d.id ==  item.data.id){
-							Debug.Log((int)d.id);
-							if(t.transform.parent.gameObject.name.Contains("Clone")){
-								indexRemove.Add((int)d.id);
-							}
-							
-						}
-					}
-				}
-			}
-			
-			if(saveOnExit){
-				if(SaveGame.Load<List<CardData>> ( "History" )!=null){
-					GameManager.Instance.history = SaveGame.Load<List<CardData>> ( "History" );
-				}
-				GameManager.Instance.history.Add(GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1]);
-				SaveGame.Save ( "History", GameManager.Instance.history);
-			}
-				
-			
-			//GameManager.Instance.mItemDataList = SaveGame.Load<List<CardData>> ( "mItemDataList" );
-			if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
-				GameManager.Instance.menuManager.PopMenu ();
-			}
-			else{
-				foreach(Toggle t in GetComponentsInChildren<Toggle>(true)){
-					if(t.isOn){
-						RoundItem item = t.transform.parent.GetComponent<RoundItem>();
-						//if(item.mItemDataIndex == c.rD){
-					
-						foreach(RoundData d in c.rData){
-							if(d.id ==  item.data.id){
-								Debug.Log((int)d.id);
-								d.reCheck = false;
-							}
-						}
-					}
-				}
-			
-				foreach(int cDD in indexRemove){
-					Debug.Log(cDD);
-					for(int a = 0; a<  c.rData.Count ; a++){
-						if(a == cDD){
-							c.rData[a].reCheck = false ;
-						}
-						else{
-							//c.rData[a].reCheck = true ;
-						}
-					}
-				}
-				c.rData.RemoveAll(it => it.reCheck);
-			
-				if(indexRemove.Count>0){
-					if(SaveGame.Load<List<CardData>> ( "Favorites" )!=null){
-						GameManager.Instance.favorite = SaveGame.Load<List<CardData>> ( "Favorites" );
-					}
-					GameManager.Instance.favorite.Add(GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1]);
-					
-					SaveGame.Save ( "Favorites", GameManager.Instance.favorite);
-				}
-				GameManager.Instance.mItemDataList.Clear();
-				GameManager.Instance.menuManager.PopMenuToState (UIManager.State.MainMenu);
-				
-			}
-			
-			GameManager.Instance.GetComponent<AudioSource>().PlayOneShot(GameManager.Instance.click);
-			GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive (true);
-		}
+    public void MainMenu()
+    {
+        indexRemove = new List<int>();
+        CardData c = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1];
+        foreach (Toggle t in GetComponentsInChildren<Toggle>(true))
+        {
+            if (t.isOn)
+            {
+                RoundItem item = t.transform.parent.GetComponent<RoundItem>();
+                foreach (RoundData d in c.rData)
+                {
+                    if (d.id ==  item.data.id)
+                    {
+                        Debug.Log((int)d.id);
+                        if (t.transform.parent.gameObject.name.Contains("Clone"))
+                        {
+                            indexRemove.Add((int)d.id);
+                        }
+                    }
+                }
+            }
+        }
+        if (saveOnExit){
+            if (SaveGame.Load<List<CardData>> ( "History" )!=null){
+                GameManager.Instance.history = SaveGame.Load<List<CardData>> ( "History" );
+            }
+            GameManager.Instance.history.Add(GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1]);
+            SaveGame.Save ( "History", GameManager.Instance.history);
+        }
+
+
+        //GameManager.Instance.mItemDataList = SaveGame.Load<List<CardData>> ( "mItemDataList" );
+        if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
+        {
+            Debug.Log("this was the main menu");
+            GameManager.Instance.menuManager.PopMenu ();
+        }
+        else
+        {
+            foreach (Toggle t in GetComponentsInChildren<Toggle>(true))
+            {
+                if (t.isOn)
+                {
+                    RoundItem item = t.transform.parent.GetComponent<RoundItem>();
+                    //if(item.mItemDataIndex == c.rD){
+                    foreach (RoundData d in c.rData){
+                        if (d.id ==  item.data.id){
+                            Debug.Log((int)d.id);
+                            d.reCheck = false;
+                        }
+                    }
+                }
+            }
+            foreach (int cDD in indexRemove)
+            {
+                Debug.Log(cDD);
+                for (int a = 0; a<  c.rData.Count ; a++)
+                {
+                    if (a == cDD)
+                    {
+                        c.rData[a].reCheck = false ;
+                    }
+                    else
+                    {
+                        //c.rData[a].reCheck = true ;
+                    }
+                }
+            }
+            c.rData.RemoveAll(it => it.reCheck);
+            if (indexRemove.Count>0)
+            {
+                if (SaveGame.Load<List<CardData>> ( "Favorites" )!=null)
+                {
+                    GameManager.Instance.favorite = SaveGame.Load<List<CardData>> ( "Favorites" );
+                }
+                GameManager.Instance.favorite.Add(GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1]);
+                SaveGame.Save ( "Favorites", GameManager.Instance.favorite);
+            }
+            GameManager.Instance.mItemDataList.Clear();
+            GameManager.Instance.menuManager.PopMenuToState (UIManager.State.MainMenu);
+        }
+        GameManager.Instance.GetComponent<AudioSource>().PlayOneShot(GameManager.Instance.click);
+        GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive (true);
+    }
 		LoopListViewItem2 InitScrollView(LoopListView2 listView, int index)
 		{
 			if (index < 0 || index >= Card.Get.TotalItemCount)
