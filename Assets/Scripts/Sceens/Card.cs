@@ -71,22 +71,25 @@ using UnityEngine.UI;
 			}
 
 		}
-		
-		void Awake()
-		{
-			Init();
-			InitData();
-			//foreach(Toggle t in GetComponentsInChildren<Toggle>()){
-			//	if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
-			//		t.enabled = false;	
-			//	}
-				
-			//}
-		}
-		
-		void OnEnable(){
-			GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive(false);
-		}
+
+    void Awake()
+    {
+        Init();
+        InitData();
+ 
+       
+    }
+    void OnEnable()
+    {
+        GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive(false);
+        //Ghilman
+        if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
+        {
+            Debug.Log("this is the main menu");
+            HideSaveButton();
+        }
+        //Ghilman
+    }
 		void Start()
 		{
 			mLoopListView.InitListView(Card.Get.TotalItemCount, InitScrollView);
@@ -165,7 +168,7 @@ using UnityEngine.UI;
                 RoundItem item = t.transform.parent.GetComponent<RoundItem>();
                 foreach (RoundData d in c.rData)
                 {
-                    if (d.id ==  item.data.id)
+                    if (d.id ==  item.roundData.id)
                     {
                         Debug.Log((int)d.id);
                         if (t.transform.parent.gameObject.name.Contains("Clone"))
@@ -188,11 +191,13 @@ using UnityEngine.UI;
         //GameManager.Instance.mItemDataList = SaveGame.Load<List<CardData>> ( "mItemDataList" );
         if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
         {
-            Debug.Log("this was the main menu");
-            GameManager.Instance.menuManager.PopMenu ();
+            GameManager.Instance.menuManager.PopMenu();
         }
         else
         {
+            //Ghilman
+            Screen.sleepTimeout = SleepTimeout.SystemSetting;
+            //Ghiman
             foreach (Toggle t in GetComponentsInChildren<Toggle>(true))
             {
                 if (t.isOn)
@@ -200,7 +205,7 @@ using UnityEngine.UI;
                     RoundItem item = t.transform.parent.GetComponent<RoundItem>();
                     //if(item.mItemDataIndex == c.rD){
                     foreach (RoundData d in c.rData){
-                        if (d.id ==  item.data.id){
+                        if (d.id ==  item.roundData.id){
                             Debug.Log((int)d.id);
                             d.reCheck = false;
                         }
@@ -259,7 +264,7 @@ using UnityEngine.UI;
 				item.IsInitHandlerCalled = true;
 				itemScript.Init();
 			}
-			itemScript.SetItemData(itemData,index, isHistory);
+			itemScript.SetItemData(itemData, isHistory);
 			return item;
 		}
 

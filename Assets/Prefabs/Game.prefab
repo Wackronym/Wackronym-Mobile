@@ -8586,7 +8586,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: \ue892
   m_Size: 48
-  m_ScaledSize: 45.034966
+  m_ScaledSize: 45
   m_SizeMode: 3
   m_MaterialUiScaler: {fileID: 0}
   m_VectorImageData:
@@ -18177,7 +18177,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: \ue2c6
   m_Size: 48
-  m_ScaledSize: 45.034966
+  m_ScaledSize: 45
   m_SizeMode: 3
   m_MaterialUiScaler: {fileID: 0}
   m_VectorImageData:
@@ -19087,7 +19087,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: \ue5cd
   m_Size: 48
-  m_ScaledSize: 45.034966
+  m_ScaledSize: 45
   m_SizeMode: 3
   m_MaterialUiScaler: {fileID: 0}
   m_VectorImageData:

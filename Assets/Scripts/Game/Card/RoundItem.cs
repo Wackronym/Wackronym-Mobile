@@ -9,180 +9,89 @@ using UnityEngine.EventSystems;
 public class RoundItem : MonoBehaviour {
 
     //Ghilman
-    public Text mBodyText;
-    public Toggle toggle;
-    //public Button shareButton;
+    public Text mainText;
+    public Toggle favoriteToggle;
+    public RoundData roundData;
+    bool isHistory;
     //Ghilman
-    public RoundData data;
-
-	//public Text underline;
-	//public int mainCardIndex;
-	//Dictionary<string, Sprite> spriteObjDict = new Dictionary<string, Sprite>();
-	//public Sprite[] spriteObjArray;
-    //public Text mTitle;
-    //public Image mStatus;
-    //public TextMeshProUGUI mBody;
-    //public GameObject mContentRootObj;
-    //public int mItemDataIndex = -1;
-    //public LoopListView2 mLoopListView;
 
     public void Init()
 	{
    
 	}
-	
-	public void SetItemData(RoundData itemData,int itemIndex, bool isHistory)
+    //Ghilman 
+
+    /// <summary>
+    /// this function will set the values for this object
+    /// </summary>
+    /// <param name="_itemData"></param>
+    /// <param name="_isHistory"></param>
+    public void SetItemData(RoundData _itemData, bool _isHistory)
 	{
-        //Ghilman 
-        data = itemData;
-        data.id = itemIndex;
+        roundData = _itemData;
+        isHistory = _isHistory;
 
-        string[] srtingParts = data.mSenence.Split("_"[0]);
+        string[] srtingParts = roundData.mSenence.Split("_"[0]);
         string stringToShow = srtingParts[0];
-        mBodyText.text = stringToShow+ " <color=Blue>"+data.mAnswer+"</color> "+ srtingParts[srtingParts.Length-1];
 
-        Debug.Log("what is itemData.reCheck" + itemData.reCheck);
+        mainText.text = stringToShow+ " <color=Blue>"+ roundData.mAnswer+"</color> "+ srtingParts[srtingParts.Length-1];
 
         if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
         {
-            if (isHistory)
+            favoriteToggle.enabled = true;
+            if (_isHistory)
             {
-                toggle.enabled = true;
+               
             }
             else
             {
-                toggle.enabled = false;
-                toggle.isOn = true;
+                favoriteToggle.isOn = true;
             }
         }
         else
         {
             Debug.Log("there is a other thing not main menu");
         }
-        //Ghilman 
-
-        //shareButton.onClick.RemoveAllListeners();
-        // shareButton.onClick.AddListener(ShareButtonCall);
-    }
-    //Ghilman 
+    } 
+    /// <summary>
+    /// this function will be called on share button pressed.
+    /// </summary>
     public void ShareButtonCall()
     {
         Debug.Log("Share button is pressed");
     }
+    /// <summary>
+    /// this function will remove the Favorite.
+    /// </summary>
+    public void RemoveFromFavorite()
+    {
+        if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
+        {
+            if (isHistory)
+            {
+
+            }
+            else
+            {
+                GameManager.Instance.favorite[roundData.mainIndex].rData[roundData.innerIndex] = null;
+                GameManager.Instance.shouldSaveFavorites = true;
+                this.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// this will call on value change of toggle.
+    /// </summary>
+    public void OnValuesChangeOfFavoriteToggle()
+    {
+        if (!favoriteToggle.isOn)
+        {
+            RemoveFromFavorite();
+        }
+    }
     //Ghilman
-
-
-    //public void ReEnable(){
-    //	if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
-    //		Toggle t = GetComponentInChildren<Toggle>();
-    //		if(t!=null){
-    //			t.isOn = true;
-    //		}
-    //	}
-    //	GameManager.Instance.favObj = this.gameObject;
-
-    //	}
-
-    //public void MyIndex(){
-    //		GameManager.Instance.favTempIndex = (int)data.id;
-    //		GameManager.Instance.favMIndex = data.mainIndex;
-    //		GameManager.Instance.favRIndex = (int)data.innerIndex;
-    //		GameManager.Instance.favObj = this.gameObject;
-    //	}
-
-    //public void RemoveFavorite(){
-
-    //GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.RemoveAt(GameManager.Instance.favRIndex);
-    //if(GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.Count==0){
-    //	GameManager.Instance.favorite.RemoveAt(GameManager.Instance.favMIndex);
-    //}
-    //Destroy(GameManager.Instance.favObj);
-    //}
-
-    //void InitData()
-    //{
-    //	spriteObjDict.Clear();
-    //	foreach (Sprite sp in spriteObjArray)
-    //	{
-    //		spriteObjDict[sp.name] = sp;
-    //	}
-    //}
-    //public Sprite GetSpriteByName(string spriteName)
-    //{
-    //	Sprite ret = null;
-    //	if (spriteObjDict.TryGetValue(spriteName, out ret))
-    //	{
-    //		return ret;
-    //	}
-    //	return null;
-    //}
 
 }
 
 
-
-//if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
-//{
-//Toggle t = GetComponentInChildren<Toggle>();
-//        if (t != null)
-//        {
-//            t.isOn = true;
-//            t.enabled = false;
-//            if (isHistory)
-//            {
-//                 //t.gameObject.SetActive(false);
-//             }
-//         }
-
-//     }
-
-
-//underline = mBody.transform.GetChild(0).GetComponent<Text>();
-
-//mItemDataIndex = itemIndex;
-//if(data.mTotalRoundTime.Equals("90")){
-//	mTitle.text = "Wack " + data.time.Substring(0, 8)  + " ("+data.mTotalRoundTime+"s)";
-//}
-//else if( data.mTotalRoundTime.Equals("60")){
-//	mTitle.text = "Wack " + data.time.Substring(0, 8)  + " ("+data.mTotalRoundTime+"s)";
-//}
-//else if( data.mTotalRoundTime.Equals("30")){
-//	mTitle.text = "Wack " + data.time.Substring(0, 8)  + " ("+data.mTotalRoundTime+"s)";
-//}
-//else{
-//	//mTitle.text = "Wack " + data.time.Substring(0, 8)  + " (Unlimited)";
-//}
-//string dataStr = data.mSenence.Replace("__","__");
-
-//mBody.text =  dataStr +"<u>" +data.mAnswer+"</u>";
-
-
-//underline.text = "<color=white>"; 
-
-
-//int totalLength = dataStr.Length-1;
-
-//if(data.mAnswer!=null){
-//	totalLength = totalLength - 5;
-//}
-//for(int i=0; i<totalLength;i++){
-//underline.text += "_";
-//}
-
-//underline.text += "</color>";
-
-//if(data.mAnswer!=null){
-//underline.text += "<color=black>"; 
-//for(int i=0; i<data.mAnswer.Length-1;i++){
-//underline.text += "_";
-//}
-//underline.text += "</color>";
-//}
-
-
-//if(data.mCompleted){
-//mStatus.sprite = GetSpriteByName("checked");	
-//}
-//else{
-//mStatus.sprite = GetSpriteByName("unchecked");	
-//}

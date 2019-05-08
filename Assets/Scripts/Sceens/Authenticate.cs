@@ -83,6 +83,7 @@ public class Authenticate : BaseUI
     {
         GameManager.Instance.authenticateState = AuthenticateState.Signup;
         loginPanel.SetActive(false);
+        registerPanel.SetActive(true);
     }
     //Ghilman
 
@@ -256,7 +257,8 @@ public class Authenticate : BaseUI
 	
 	
 	public void Reset() {
-		isConnecting = true;
+        
+        isConnecting = true;
 		loginHudIndex = 0;
 		HTTPRequest www = new HTTPRequest(new Uri( GameManager.Instance.webURLPrefix + "auth/forgot"),HTTPMethods.Post,(request, response) => {
 			HTTPResponse res = (HTTPResponse)response;
@@ -272,7 +274,6 @@ public class Authenticate : BaseUI
 			}
 			isConnecting = false;
 		});
-        Debug.Log("usernameOrEmail = "+ forget_Text_email.text);
 		www.AddField("usernameOrEmail", forget_Text_email.text);
 		www.Send();
 	}
@@ -303,40 +304,85 @@ public class Authenticate : BaseUI
         HTTPRequest www = new HTTPRequest(new Uri("https://wackronym.net/api/users/mobileEditUser"), HTTPMethods.Post, (request, response) => {
             HTTPResponse res = (HTTPResponse)response;
             Debug.Log(res.DataAsText);
-            Debug.Log("res is up");
             if (res.IsSuccess)
             {
                 string request_result = res.DataAsText;
                 if (request_result.Length > 10)
                 {
                     GameManager.Instance.header = res.Headers;
-                    Debug.Log(res.Data);
-                    //GameManager.Instance.player = Json.Decode(request_result) as Player;
-                    Dictionary<string, object> b = Json.Decode(request_result) as Dictionary<string, object>;
-                    foreach (string key in b.Keys)
-                    {
-                        Debug.Log("key = "+ key+" value = "+b[key]);
-                    }
-                    Debug.Log(res.Data);
                 }
+                ProfileIsUpdated();
             }
             else
             {
-                statusAuth.text = "Incorrect User!";
+                statusAuth.text = "Field to updated information!";
             }
 
             isConnecting = false;
         });
 
-        string userId = GameManager.Instance.player._id;
-        www.AddField("user", userId);
-        www.AddField("firstName", update_Text_fName.text);
-        www.AddField("lastName", update_Text_lName.text);
-        www.AddField("displayName", update_Text_username.text);
-        www.AddField("email", update_Text_email.text);
+        bool canSend = false;
+        string errorMessage = "";
 
-        
-        www.Send();
+        www.AddField("user", GameManager.Instance.player._id);
+
+        ///check for first name. 
+        if (!string.IsNullOrEmpty(update_Text_fName.text)){
+            www.AddField("firstName", update_Text_fName.text);
+            canSend = true;
+        }else{
+            canSend = false;
+            errorMessage = "Please enter the first name.";
+        }
+
+        /// check for last name. 
+        if (!string.IsNullOrEmpty(update_Text_lName.text)){
+            www.AddField("lastName", update_Text_lName.text);
+            canSend = true;
+        }else{
+            canSend = false;
+            errorMessage = "Please enter the last name.";
+        }
+        /// check for display name. 
+        if (!string.IsNullOrEmpty(update_Text_username.text)){
+            www.AddField("displayName", update_Text_username.text);
+            canSend = true;
+        }else{
+            canSend = false;
+            errorMessage = "Please enter the display name.";
+        }
+
+        /// check for email.
+        if (!string.IsNullOrEmpty(update_Text_email.text)){
+            www.AddField("email", update_Text_email.text);
+            canSend = true;
+        }else{
+            canSend = false;
+            errorMessage = "Please enter the email first.";
+        }
+       
+        if (canSend){
+            www.Send();
+        }else{
+            statusAuth.text = errorMessage;
+        }
+    }
+
+    void ProfileIsUpdated()
+    {
+        PlayerPrefs.SetString("usernameOrEmail", login_Text_email.text);
+
+        GameManager.Instance.player.firstName = update_Text_fName.text;
+        GameManager.Instance.player.lastName = update_Text_lName.text;
+        GameManager.Instance.player.displayName = update_Text_username.text;
+        GameManager.Instance.player.email = update_Text_email.text;
+
+        GameManager.Instance.menuManager.PopMenu();
+        Profile p = GameManager.Instance.topPopup.GetComponentInChildren<Profile>();
+        if (p != null)
+        {
+            p.RefresUI();
+        }
     }
     public void OnChangePasswordButtonClick()
     {
@@ -373,14 +419,13 @@ public class Authenticate : BaseUI
        // currentPassword, newPassword, verifyPassword, userId
 
         string _userId = GameManager.Instance.player._id;
-         www.AddField("currentPassword", ChangePass_Text_CurrentPass.text);
-         www.AddField("newPassword", ChangePass_Text_NewPass.text);
-         www.AddField("verifyPassword", ChangePass_Text_VerifyPass.text);
-         www.AddField("userId", _userId);
-
-
+        www.AddField("currentPassword", ChangePass_Text_CurrentPass.text);
+        www.AddField("newPassword", ChangePass_Text_NewPass.text);
+        www.AddField("verifyPassword", ChangePass_Text_VerifyPass.text);
+        www.AddField("userId", _userId);
         www.Send();
     }
+ 
 
     //Ghilman
 	public void CloseAuthBox(){

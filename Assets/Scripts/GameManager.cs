@@ -53,6 +53,7 @@ public class GameManager : Singleton<GameManager>
 
     //Ghilman
     public AuthenticateState authenticateState = AuthenticateState.Login;
+    public bool shouldSaveFavorites = false; // used if rounds are deleted from favortites.
     //Ghilman
 
     public void PopSetting(){

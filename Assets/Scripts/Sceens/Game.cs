@@ -44,6 +44,11 @@ public class Game : BaseUI
     public InputField mainTextInputField; 
     public Text textText1;
     public Text textText2;
+
+    private int focusCounter;
+    private DateTime lastMinimize;
+    private double minimizedSeconds;
+
     //Ghilman
 
     void Awake(){
@@ -71,7 +76,9 @@ public class Game : BaseUI
     void Start()
 	{
         //Ghilman
+        Application.runInBackground = true;
         OpenNativeKeyboard();
+        Screen.sleepTimeout = (int)SleepTimeout.NeverSleep;
         //Ghilman
 
         Time.timeScale = 1;
@@ -230,8 +237,11 @@ public class Game : BaseUI
 	}
 	
 	public void NextRound()
-	{	
-		List<RoundData> r = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData;
+	{
+        //Ghilman
+        SetMainInpufield();
+        //Ghilman
+        List<RoundData> r = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData;
 		if(GameManager.Instance.currentRound >= totalRound && GameManager.Instance.menuManager.NavigationStackPeek()!= UIManager.State.Win){
 			GameManager.Instance.cardIndex = GameManager.Instance.mItemDataList.Count-1;
 			r[r.Count-1].id = GameManager.Instance.currentRound-1;
@@ -379,14 +389,29 @@ public class Game : BaseUI
     }
 
     //Ghilman
+    /// <summary>
+    /// this fucntion will reset the inputfield.
+    /// </summary>
+    void SetMainInpufield()
+    {
+        mainTextInputField.text = "";
+    }
+    /// <summary>
+    /// this fuction will onen the native keyboard after clicking on input field.
+    /// </summary>
     void OpenNativeKeyboard()
     {
         mainTextInputField.Select();
         mainTextInputField.onValidateInput += delegate (string input, int charIndex, char addedChar) { return MyValidate(addedChar); };
     }
+    /// <summary>
+    /// this fuction will validate very charector, enter by the key boaed. it is a call back for input text validation.  
+    /// </summary>
+    /// <param name="charToValidate"></param>
+    /// <returns></returns>
     private char MyValidate(char charToValidate)
     {
-        string allowedSpecialChars = ", . ? : ; ! ";
+        string allowedSpecialChars = ", . ? : ; ! ' ";
         if (allowedSpecialChars.Contains(charToValidate.ToString()) || Char.IsLetterOrDigit(charToValidate))
         {
             if (Char.IsDigit(charToValidate))
@@ -400,9 +425,41 @@ public class Game : BaseUI
         }
         return charToValidate;
     }
+    /// <summary>
+    /// this function will bubmit the text. send text to the Numan's code.  
+    /// </summary>
     public void SubmitText()
     {
         ValidateAnswer();
+    }
+    void OnApplicationPause(bool isGamePause)
+    {
+        if (isGamePause)
+        {
+            GoToMinimize();
+        }
+    }
+    void OnApplicationFocus(bool isGameFocus)
+    {
+        if (isGameFocus)
+        {
+            focusCounter++;
+            GoToMaximize();
+        }
+    }
+
+    public void GoToMinimize()
+    {
+        lastMinimize = DateTime.Now;
+    }
+
+    public void GoToMaximize()
+    {
+        if (focusCounter >= 1)
+        {
+            minimizedSeconds = (DateTime.Now - lastMinimize).TotalSeconds;
+            sec += (Int32)minimizedSeconds;
+        }
     }
     //Ghilman
 }

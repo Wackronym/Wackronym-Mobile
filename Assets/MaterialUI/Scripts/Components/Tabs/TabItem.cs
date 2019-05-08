@@ -92,7 +92,15 @@ namespace MaterialUI
 	            GameManager.Instance.activeTabIndex = 0;
 	            //Debug.Log(id);
 	            m_TabView.SetPage(id);
-	            if(id == 0){
+
+                //Ghilman
+                if (GameManager.Instance.shouldSaveFavorites)
+                {
+                    GameManager.Instance.shouldSaveFavorites = false;  
+                    SaveGame.Save("Favorites", GameManager.Instance.favorite);
+                }
+                //Ghilman
+                if (id == 0){
 	            	
 	            	if(transform.name == "My Friends"){
 	            		GameManager.Instance.BroadcastMessage("Refresh");
@@ -127,27 +135,40 @@ namespace MaterialUI
 	            		GameManager.Instance.BroadcastMessage("Refresh");
 	            		
 	            	}
-	            	if(transform.name == "Favorites"){
-	            		if(SaveGame.Load<List<CardData>> ( "Favorites" )!=null){
-	            			GameManager.Instance.dummyFavorite.Clear();
-            				GameManager.Instance.favorite = SaveGame.Load<List<CardData>> ( "Favorites" );
-            				for(int i=0;i< GameManager.Instance.favorite.Count;i++){
-            					CardData c = GameManager.Instance.favorite[i];
-            					for(int t=0; t < c.rData.Count;t++  ){
-            						RoundData r = c.rData[t]; 
-            						r.mainIndex = i;
-            						r.innerIndex = t;
-            						GameManager.Instance.dummyFavorite.Add(r);
-            					}
-            				}
-	            		}
-	            		GameManager.Instance.mItemDataList = GameManager.Instance.favorite;
-	            		Favorites h = GameManager.Instance.GetComponentInChildren<Favorites>(true);
-		            	
-		            	h.enabled = true;
-            			h.DoRefreshDataSource();	
-            			GameManager.Instance.activeTabIndex = id;
-	            		}
+                    if (transform.name == "Favorites")
+                    {
+                        if (SaveGame.Load<List<CardData>>("Favorites") != null)
+                        {
+                            GameManager.Instance.dummyFavorite.Clear();
+                            GameManager.Instance.favorite = SaveGame.Load<List<CardData>>("Favorites");
+                            for (int i = 0; i < GameManager.Instance.favorite.Count; i++)
+                            {
+                                CardData c = GameManager.Instance.favorite[i];
+                                for (int t = 0; t < c.rData.Count; t++)
+                                {
+                                    //Ghilman
+                                    if (c.rData[t] == null)
+                                    {
+                                        c.rData.RemoveAt(t);
+                                    }
+                                    if(t < c.rData.Count)
+                                    {
+                                        RoundData r = c.rData[t];
+                                        r.mainIndex = i;
+                                        r.innerIndex = t;
+                                        GameManager.Instance.dummyFavorite.Add(r);
+                                    }
+                                    //Ghilman
+                                }
+                            }
+                        }
+                        GameManager.Instance.mItemDataList = GameManager.Instance.favorite;
+                        Favorites h = GameManager.Instance.GetComponentInChildren<Favorites>(true);
+
+                        h.enabled = true;
+                        h.DoRefreshDataSource();
+                        GameManager.Instance.activeTabIndex = id;
+                    }
             	}
 	            else if(id == 3){
 	            	GameManager.Instance.BroadcastMessage("Refresh");

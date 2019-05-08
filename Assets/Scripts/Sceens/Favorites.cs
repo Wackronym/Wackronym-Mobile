@@ -6,8 +6,8 @@ using BayatGames.SaveGamePro;
 using System;
 using UnityEngine.UI;
 
-	public class Favorites : MonoBehaviour
-	{
+public class Favorites : MonoBehaviour
+{
 		
 		
 		public LoopListView2 mLoopListView;
@@ -28,12 +28,6 @@ using UnityEngine.UI;
 			transform.parent.GetChild(3).gameObject.SetActive(false);
 			Init();
 			InitData();
-			foreach(Toggle t in GetComponentsInChildren<Toggle>()){
-				if(GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu){
-					t.enabled = false;	
-				}
-				
-			}
 		}
 		
 		void OnEnable(){
@@ -48,16 +42,15 @@ using UnityEngine.UI;
 		
 		}
 		
-		public void RemoveFavorite(){
-			GameManager.Instance.favObj.SetActive(false);
-			GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.RemoveAt(GameManager.Instance.favRIndex);
-			if(GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.Count==0){
-				GameManager.Instance.favorite.RemoveAt(GameManager.Instance.favMIndex);
-			}
-			GameManager.Instance.dummyFavorite.RemoveAt(GameManager.Instance.favTempIndex);
-			SaveGame.Save ( "Favorites", GameManager.Instance.favorite);
-			
-		}
+		//public void RemoveFavorite(){
+		//	GameManager.Instance.favObj.SetActive(false);
+		//	GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.RemoveAt(GameManager.Instance.favRIndex);
+		//	if(GameManager.Instance.favorite[GameManager.Instance.favMIndex].rData.Count==0){
+		//		GameManager.Instance.favorite.RemoveAt(GameManager.Instance.favMIndex);
+		//	}
+		//	GameManager.Instance.dummyFavorite.RemoveAt(GameManager.Instance.favTempIndex);
+		//	SaveGame.Save ( "Favorites", GameManager.Instance.favorite);
+		//}
 		
 		void OnEndDrag()
 		{
@@ -118,13 +111,12 @@ using UnityEngine.UI;
 			MainMenu();
 			transform.parent.GetChild(3).gameObject.SetActive(false);
 		}
-		public void MainMenu(){
-			
-			GameManager.Instance.favorite.RemoveAt(GameManager.Instance.favorite.Count-1);
-			GameManager.Instance.menuManager.PopMenuToState (UIManager.State.MainMenu);
-			GameManager.Instance.GetComponent<AudioSource>().PlayOneShot(GameManager.Instance.click);
-			GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive (true);
-		}
+    public void MainMenu(){
+        GameManager.Instance.favorite.RemoveAt(GameManager.Instance.favorite.Count-1);
+        GameManager.Instance.menuManager.PopMenuToState (UIManager.State.MainMenu);
+        GameManager.Instance.GetComponent<AudioSource>().PlayOneShot(GameManager.Instance.click);
+        GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive (true);
+    }
 
 		LoopListViewItem2 InitScrollView(LoopListView2 listView, int index)
 		{
@@ -148,7 +140,7 @@ using UnityEngine.UI;
 				item.IsInitHandlerCalled = true;
 				itemScript.Init();
 			}
-			itemScript.SetItemData(itemData,index, false);
+			itemScript.SetItemData(itemData, false);
 			return item;
 		}
 
@@ -238,7 +230,4 @@ using UnityEngine.UI;
 			return spriteObjArray[index].name;
 		}
 		
-
-		
-
 	}
