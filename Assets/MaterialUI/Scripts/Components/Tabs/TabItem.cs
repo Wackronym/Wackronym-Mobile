@@ -147,11 +147,7 @@ namespace MaterialUI
                                 for (int t = 0; t < c.rData.Count; t++)
                                 {
                                     //Ghilman
-                                    if (c.rData[t] == null)
-                                    {
-                                        c.rData.RemoveAt(t);
-                                    }
-                                    if(t < c.rData.Count)
+                                    if (c.rData[t] != null)
                                     {
                                         RoundData r = c.rData[t];
                                         r.mainIndex = i;

@@ -117,8 +117,13 @@ public class Favorites : MonoBehaviour
         GameManager.Instance.GetComponent<AudioSource>().PlayOneShot(GameManager.Instance.click);
         GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive (true);
     }
-
-		LoopListViewItem2 InitScrollView(LoopListView2 listView, int index)
+    public void ResetMyUI()
+    {
+        mLoopListView.InitListView(TotalItemCount, InitScrollView);
+        mLoopListView.mOnEndDragAction = OnEndDrag;
+        transform.parent.GetChild(3).gameObject.SetActive(false);
+    }
+    LoopListViewItem2 InitScrollView(LoopListView2 listView, int index)
 		{
 			if (index < 0 || index >= TotalItemCount)
 			{

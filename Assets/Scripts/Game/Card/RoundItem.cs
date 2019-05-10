@@ -74,12 +74,24 @@ public class RoundItem : MonoBehaviour {
             else
             {
                 GameManager.Instance.shouldSaveFavorites = true;
+                GameManager.Instance.favorite[roundData.mainIndex].rData[roundData.innerIndex].reCheck = true;
                 GameManager.Instance.favorite[roundData.mainIndex].rData[roundData.innerIndex] = null;
-                this.gameObject.SetActive(false);
+                //this.gameObject.SetActive(false);
+                DeleteMySelf();
             }
         }
     }
-    public void AddInFavorite()
+    void DeleteMySelf()
+    {
+        //GameObject.Destroy(this.gameObject);
+        foreach (Transform t in this.transform)
+        {
+            t.gameObject.SetActive(false);
+        }
+       // RectTransform MyRectTransform = this.GetComponent<RectTransform>();
+       // MyRectTransform.sizeDelta = Vector2.zero;
+    }
+    void AddInFavorite()
     {
         if (isHistory)
         {
@@ -90,7 +102,7 @@ public class RoundItem : MonoBehaviour {
     /// <summary>
     /// this will call on value change of toggle.
     /// </summary>
-    public void OnValuesChangeOfFavoriteToggle()
+    void OnValuesChangeOfFavoriteToggle()
     {
         if (!favoriteToggle.isOn)
         {
@@ -100,6 +112,10 @@ public class RoundItem : MonoBehaviour {
         {
             AddInFavorite();
         }
+    }
+    void OnDestroy()
+    {
+        this.transform.parent.parent.parent.parent.GetComponent<Favorites>().ResetMyUI();
     }
     //Ghilman
 
