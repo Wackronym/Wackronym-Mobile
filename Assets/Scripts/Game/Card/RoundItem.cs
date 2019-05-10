@@ -73,10 +73,17 @@ public class RoundItem : MonoBehaviour {
             }
             else
             {
-                GameManager.Instance.favorite[roundData.mainIndex].rData[roundData.innerIndex] = null;
                 GameManager.Instance.shouldSaveFavorites = true;
+                GameManager.Instance.favorite[roundData.mainIndex].rData[roundData.innerIndex] = null;
                 this.gameObject.SetActive(false);
             }
+        }
+    }
+    public void AddInFavorite()
+    {
+        if (isHistory)
+        {
+            GameManager.Instance.mItemDataList[GameManager.Instance.cardIndex].rData[roundData.innerIndex].reCheck = false;
         }
     }
 
@@ -88,6 +95,10 @@ public class RoundItem : MonoBehaviour {
         if (!favoriteToggle.isOn)
         {
             RemoveFromFavorite();
+        }
+        else
+        {
+            AddInFavorite();
         }
     }
     //Ghilman

@@ -8,34 +8,36 @@ using UnityEngine.UI;
 	[Serializable]
 	public class CardData
     {
-	    public int mId;
-	    public string mName;
-	    public string mDate;
-	    public string mDuration;
-	    public string mPic;
+	    public int mId; // Ghilman,, Numan is saving card id in this var.
+	    public string mName; // Ghilman Numan may be saving mode of the game in var. 
+	    public string mDate; // Ghilman Numan is saving date and time in this var.
+	    public string mDuration;// Ghilman does not know what is this.
+	    public string mPic; // 
 	    public bool mChecked;
 	    public int mainIndex;
 	    public List<RoundData> rData = new List<RoundData>();
 	    
     }
-    [Serializable]
-    public class RoundData{
-	    public string mAnswer;
-	    public string mSenence;
-	    public bool mCompleted;
-	    public string mTotalRoundTime;
-	    public string mUsedRoundTime;
-	    public string time;
-	    public float id;
-	    public bool reCheck = false;
-	    public int mainIndex;
-	    public int innerIndex;
-    }
+[Serializable]
+public class RoundData{
+    public string mAnswer;
+    public string mSenence;
+    public bool mCompleted;
+    public string mTotalRoundTime;
+    public string mUsedRoundTime;
+    public string time;
+    public float id;
+    public bool reCheck = false; //Ghilman,,, Numan is using this variable as isNotFavorite.
+    public int mainIndex;
+    public int innerIndex;
+}
     
 
 	public class Card : BaseUI
 	{
-		
+    //Ghilman
+    CardData currentCardData;
+    //Ghilman
 		public int mId;
 		public Text mName;
 		public Text mRound;
@@ -90,26 +92,62 @@ using UnityEngine.UI;
         }
         //Ghilman
     }
-		void Start()
-		{
-			mLoopListView.InitListView(Card.Get.TotalItemCount, InitScrollView);
-			mLoopListView.mOnEndDragAction = OnEndDrag;
-			if( GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration.Equals("90")){
-				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10);// + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
-			}
-			else if( GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration.Equals("60")){
-				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10);// + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
-			}
-			else if( GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration.Equals("30")){
-				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10);// + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
-			}
-			else{
-				mStats.text = "Posted:"+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate.Substring(0,10);// + " | Duration: Unlimited"; 
-			}
-			
-			mName.text = "Mode: "+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mName;
-			mRound.text = "Total Rounds: "+GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData.Count.ToString();
-			base.AddMouseDownEvent();
+    void Start()
+    {
+        mLoopListView.InitListView(Card.Get.TotalItemCount, InitScrollView);
+        mLoopListView.mOnEndDragAction = OnEndDrag;
+
+        //Ghilman
+        // just follow the numana code but in my why. which easy and right way to do.
+        currentCardData = GameManager.Instance.mItemDataList[GameManager.Instance.cardIndex];
+        if (isHistory)
+        {
+            if (currentCardData.mDuration.Equals("90"))
+            {
+                mStats.text = "Posted:" + currentCardData.mDate.Substring(0, 10);// + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
+            }
+            else if (currentCardData.mDuration.Equals("60"))
+            {
+                mStats.text = "Posted:" + currentCardData.mDate.Substring(0, 10);// + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
+            }
+            else if (currentCardData.mDuration.Equals("30"))
+            {
+                mStats.text = "Posted:" + currentCardData.mDate.Substring(0, 10);// + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
+            }
+            else
+            {
+                mStats.text = "Posted:" + currentCardData.mDate.Substring(0, 10);// + " | Duration: Unlimited"; 
+            }
+            //mName.text = "Mode: " + currentCardData.mName;
+            mName.text = "Mode: Solo";
+            mRound.text = "Total Rounds: " + currentCardData.rData.Count.ToString();
+        }
+        else
+        {
+            // Numan's code
+            if (GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count - 1].mDuration.Equals("90"))
+            {
+                mStats.text = "Posted:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count - 1].mDate.Substring(0, 10);// + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
+            }
+            else if (GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count - 1].mDuration.Equals("60"))
+            {
+                mStats.text = "Posted:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count - 1].mDate.Substring(0, 10);// + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
+            }
+            else if (GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count - 1].mDuration.Equals("30"))
+            {
+                mStats.text = "Posted:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count - 1].mDate.Substring(0, 10);// + " | Duration:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration+"s"; 
+            }
+            else
+            {
+                mStats.text = "Posted:" + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count - 1].mDate.Substring(0, 10);// + " | Duration: Unlimited"; 
+            }
+
+            mName.text = "Mode: " + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count - 1].mName;
+            mRound.text = "Total Rounds: " + GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count - 1].rData.Count.ToString();
+            // Numan's code
+        }
+        //Ghilman
+        base.AddMouseDownEvent();
 		}
 		void OnEndDrag()
 		{
@@ -184,6 +222,7 @@ using UnityEngine.UI;
                 GameManager.Instance.history = SaveGame.Load<List<CardData>> ( "History" );
             }
             GameManager.Instance.history.Add(GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1]);
+            Debug.Log(GameManager.Instance.history[GameManager.Instance.history.Count - 1].mDate);
             SaveGame.Save ( "History", GameManager.Instance.history);
         }
 
@@ -191,13 +230,20 @@ using UnityEngine.UI;
         //GameManager.Instance.mItemDataList = SaveGame.Load<List<CardData>> ( "mItemDataList" );
         if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
         {
+            //Ghilman
+            Debug.Log("this is the card data = "+currentCardData.rData.Count);
+            if (isHistory)
+            {
+                
+            }
+            //Ghilman
             GameManager.Instance.menuManager.PopMenu();
         }
         else
         {
             //Ghilman
             Screen.sleepTimeout = SleepTimeout.SystemSetting;
-            //Ghiman
+            //Ghilman
             foreach (Toggle t in GetComponentsInChildren<Toggle>(true))
             {
                 if (t.isOn)
@@ -300,7 +346,10 @@ using UnityEngine.UI;
 			{
 				return null;
 			}
-			return GameManager.Instance.mItemDataList[GameManager.Instance.cardIndex].rData[index];
+        //Ghilman
+        Debug.Log("count = " + GameManager.Instance.mItemDataList[GameManager.Instance.cardIndex].rData.Count);
+        //Ghilman
+        return GameManager.Instance.mItemDataList[GameManager.Instance.cardIndex].rData[index];
 		}
 
 		public RoundData GetItemDataById(int itemId)

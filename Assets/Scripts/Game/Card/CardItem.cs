@@ -36,8 +36,12 @@ public class CardItem : MonoBehaviour {
 		data.mId = itemIndex;
 		mItemDataIndex = itemIndex;
 		System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-GB");
-		DateTime d = DateTime.Parse(data.mDate);
-        mainText.text = d.ToString("dddd, MMM dd yyyy, hh:MM tt", culture);
+        DateTime d = DateTime.Parse(data.mDate);
+        //Ghilman
+        mainText.text = d.ToString("dddd, MMM dd yyyy, hh:mm tt");
+        //Debug.Log(mainText.text);
+        //Ghilman
+
 
         mNameText.text = "Mode: " + itemData.mName;
 
@@ -71,7 +75,7 @@ public class CardItem : MonoBehaviour {
 	{
 		if(GameManager.Instance.menuManager.NavigationStackPeek()!=UIManager.State.Win){
 			GameManager.Instance.cardIndex = data.mId;
-			GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
+            GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
 			GameManager.Instance.menuManager.GetComponentInChildren<Card>().HideSaveButton();
 			GameManager.Instance.menuManager.GetComponentInChildren<Card>().isHistory = isHistory;
 		}

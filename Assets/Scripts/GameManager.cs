@@ -38,7 +38,7 @@ public class GameManager : Singleton<GameManager>
 	public List<CardData> history = new List<CardData>();
 	public List<CardData> favorite = new List<CardData>();
 	public List<RoundData> dummyFavorite = new List<RoundData>();
-	public int cardIndex;
+	public int cardIndex; //Ghilman,, Numan is using this variable as currentCardIndex.
 	public int favMIndex;
 	public int favRIndex;
 	public int favTempIndex;

@@ -150,7 +150,11 @@ public class Game : BaseUI
 	    
 		round.text = "Round " + GameManager.Instance.currentRound.ToString()+"/"+totalRound.ToString();
 		PopulateSLetters();
-		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate = DateTime.Now.Date.ToString();
+        //Ghilman
+        Debug.Log(DateTime.Now);
+        GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDate = DateTime.Now.ToString();
+        Debug.Log(GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count - 1].mDate);
+        //Ghilman
 		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mDuration = chechTime.ToString();
 		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mId = GameManager.Instance.mItemDataList.Count-1;
 		GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].mName = PlayerPrefs.GetString("mName","Solo");
@@ -192,7 +196,6 @@ public class Game : BaseUI
 			m[m.Count-1].reCheck = true;
 			m[m.Count-1].mAnswer = slot.text;
 			m[m.Count-1].id = GameManager.Instance.currentRound;
-			
 		}
 		else{
 			GameManager.Instance.GetComponent<AudioSource>().PlayOneShot(GameManager.Instance.wrong);
@@ -411,10 +414,10 @@ public class Game : BaseUI
     /// <returns></returns>
     private char MyValidate(char charToValidate)
     {
-        string allowedSpecialChars = ", . ? : ; ! ' ";
+        string allowedSpecialChars = " , . ? : ; ! \" ";
         if (allowedSpecialChars.Contains(charToValidate.ToString()) || Char.IsLetterOrDigit(charToValidate))
         {
-            if (Char.IsDigit(charToValidate))
+            if (Char.IsDigit(charToValidate) && charToValidate.Equals("'")) 
             {
                 charToValidate = '\0';
             }
