@@ -88,8 +88,9 @@ public class RoundItem : MonoBehaviour {
         {
             t.gameObject.SetActive(false);
         }
-       // RectTransform MyRectTransform = this.GetComponent<RectTransform>();
-       // MyRectTransform.sizeDelta = Vector2.zero;
+        RectTransform MyRectTransform = this.GetComponent<RectTransform>();
+        MyRectTransform.sizeDelta = Vector2.zero;
+        //this.transform.parent.parent.parent.GetComponent<LoopListView2>().RecycleAllItem();
     }
     void AddInFavorite()
     {
@@ -115,7 +116,7 @@ public class RoundItem : MonoBehaviour {
     }
     void OnDestroy()
     {
-        this.transform.parent.parent.parent.parent.GetComponent<Favorites>().ResetMyUI();
+       // this.transform.parent.parent.parent.parent.GetComponent<Favorites>().ResetMyUI();
     }
     //Ghilman
 

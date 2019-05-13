@@ -1931,7 +1931,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1287392730090646
 GameObject:
   m_ObjectHideFlags: 1
@@ -8586,7 +8586,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: \ue892
   m_Size: 48
-  m_ScaledSize: 44.94234
+  m_ScaledSize: 44.945454
   m_SizeMode: 3
   m_MaterialUiScaler: {fileID: 0}
   m_VectorImageData:
@@ -18177,7 +18177,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: \ue2c6
   m_Size: 48
-  m_ScaledSize: 44.94234
+  m_ScaledSize: 44.945454
   m_SizeMode: 3
   m_MaterialUiScaler: {fileID: 0}
   m_VectorImageData:
@@ -19087,7 +19087,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: \ue5cd
   m_Size: 48
-  m_ScaledSize: 44.94234
+  m_ScaledSize: 44.945454
   m_SizeMode: 3
   m_MaterialUiScaler: {fileID: 0}
   m_VectorImageData:

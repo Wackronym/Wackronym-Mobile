@@ -170,7 +170,8 @@ public class Game : BaseUI
 	}
 	
 	public void ValidateAnswer(){
-		if(isCorrectAnswer()){
+
+        if (isCorrectAnswer()){
 			if(GameManager.Instance.currentRound >= totalRound && GameManager.Instance.menuManager.NavigationStackPeek()!= UIManager.State.Win){
 				GameManager.Instance.cardIndex = GameManager.Instance.mItemDataList.Count-1;
 				GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
@@ -179,8 +180,11 @@ public class Game : BaseUI
 				r[r.Count-1].mUsedRoundTime = sec.ToString();
 				r[r.Count-1].mCompleted = true;
 				r[r.Count-1].reCheck = true;
-				r[r.Count-1].mAnswer = slot.text;
-				r[r.Count-1].id = GameManager.Instance.currentRound;
+                //r[r.Count-1].mAnswer = slot.text;
+                //Ghilman
+                r[r.Count - 1].mAnswer = mainTextInputField.text;
+                //Ghilman
+                r[r.Count-1].id = GameManager.Instance.currentRound;
 				return;
 			}
 		
@@ -194,8 +198,11 @@ public class Game : BaseUI
 			m[m.Count-1].mUsedRoundTime = sec.ToString();
 			m[m.Count-1].mCompleted = true;
 			m[m.Count-1].reCheck = true;
-			m[m.Count-1].mAnswer = slot.text;
-			m[m.Count-1].id = GameManager.Instance.currentRound;
+            //m[m.Count-1].mAnswer = slot.text;
+            //Ghilman
+            m[m.Count - 1].mAnswer = mainTextInputField.text;
+            //Ghilman
+            m[m.Count-1].id = GameManager.Instance.currentRound;
 		}
 		else{
 			GameManager.Instance.GetComponent<AudioSource>().PlayOneShot(GameManager.Instance.wrong);
@@ -205,8 +212,13 @@ public class Game : BaseUI
 	
 	public bool isCorrectAnswer(){
 		GameObject wordSlotN = slotWords[characters.Length-3];
-		string[] ssize = slot.text.Split(new char[0]);
-		Debug.Log(ssize.Length-1);
+        
+        Debug.Log("slot Text = "+ mainTextInputField.text);
+        Debug.Log("slot size before = " + mainTextInputField.text.Length);
+        string[] ssize = mainTextInputField.text.Split(new char[0]);
+        Debug.Log("slot size after = " + ssize.Length);
+
+        Debug.Log(ssize.Length-1);
 		Debug.Log(characters.Length);
 		bool isAnswerCorrect = true;
 		if(ssize.Length == characters.Length){
@@ -242,7 +254,7 @@ public class Game : BaseUI
 	public void NextRound()
 	{
         //Ghilman
-        SetMainInpufield();
+       // SetMainInpufield();
         //Ghilman
         List<RoundData> r = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData;
 		if(GameManager.Instance.currentRound >= totalRound && GameManager.Instance.menuManager.NavigationStackPeek()!= UIManager.State.Win){
@@ -308,7 +320,7 @@ public class Game : BaseUI
 	}
 	
 	public void ClearTextInSlot(){
-		slot.text = "";
+        mainTextInputField.text = "";
 	}
 
     void Update()
@@ -417,7 +429,7 @@ public class Game : BaseUI
         string allowedSpecialChars = " , . ? : ; ! \" ";
         if (allowedSpecialChars.Contains(charToValidate.ToString()) || Char.IsLetterOrDigit(charToValidate))
         {
-            if (Char.IsDigit(charToValidate) && charToValidate.Equals("'")) 
+            if (Char.IsDigit(charToValidate) || charToValidate.Equals("'")) 
             {
                 charToValidate = '\0';
             }
@@ -433,6 +445,7 @@ public class Game : BaseUI
     /// </summary>
     public void SubmitText()
     {
+        Debug.Log("mainTextInputField Text = " + mainTextInputField.text);
         ValidateAnswer();
     }
     void OnApplicationPause(bool isGamePause)

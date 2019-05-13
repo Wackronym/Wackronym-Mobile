@@ -258,24 +258,24 @@ public class Authenticate : BaseUI
 	
 	public void Reset() {
         
-        isConnecting = true;
-		loginHudIndex = 0;
-		HTTPRequest www = new HTTPRequest(new Uri( GameManager.Instance.webURLPrefix + "auth/forgot"),HTTPMethods.Post,(request, response) => {
-			HTTPResponse res = (HTTPResponse)response;
-			Debug.Log( res.DataAsText);
+        //isConnecting = true;
+		//loginHudIndex = 0;
+		//HTTPRequest www = new HTTPRequest(new Uri( GameManager.Instance.webURLPrefix + "auth/forgot"),HTTPMethods.Post,(request, response) => {
+		//	HTTPResponse res = (HTTPResponse)response;
+		//	Debug.Log( res.DataAsText);
 
-            if (res.IsSuccess){
-				string request_result = res.DataAsText;
-					statusAuth.text = "Successfully sent to your email";
-					isConnecting = false;	
-			}
-			else{
-				statusAuth.text = "Failed to connect!";
-			}
-			isConnecting = false;
-		});
-		www.AddField("usernameOrEmail", forget_Text_email.text);
-		www.Send();
+         //   if (res.IsSuccess){
+		//		string request_result = res.DataAsText;
+		//			statusAuth.text = "Successfully sent to your email";
+		//			isConnecting = false;	
+		//	}
+		//	else{
+		//		statusAuth.text = "Failed to connect!";
+		//	}
+		//	isConnecting = false;
+		//});
+		//www.AddField("usernameOrEmail", forget_Text_email.text);
+		//www.Send();
 	}
 
     //Ghilman
