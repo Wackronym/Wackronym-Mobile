@@ -6,6 +6,7 @@ using BestHTTP;
 using BestHTTP.JSON;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 
 public class Authenticate : BaseUI
 {
@@ -68,8 +69,16 @@ public class Authenticate : BaseUI
             registerPanel.SetActive(false);
             loginPanel.SetActive(false);
             changePasswordPanel.SetActive(false);
+
             updateProfilePanel.SetActive(true);
-        }
+            Player _player = GameManager.Instance.player;
+
+            update_Text_fName.text = _player.firstName;
+            update_Text_lName.text = _player.lastName;
+            update_Text_email.text = _player.email;
+            update_Text_username.text = _player.displayName;
+
+}
         else if(GameManager.Instance.authenticateState == AuthenticateState.Signup)
         {
             changePasswordPanel.SetActive(false);
@@ -253,32 +262,37 @@ public class Authenticate : BaseUI
 		www.AddField("username", reg_Text_username.text);
 		www.Send();
 	}
-	
-	
-	
-	public void Reset() {
-        
-        //isConnecting = true;
-		//loginHudIndex = 0;
-		//HTTPRequest www = new HTTPRequest(new Uri( GameManager.Instance.webURLPrefix + "auth/forgot"),HTTPMethods.Post,(request, response) => {
-		//	HTTPResponse res = (HTTPResponse)response;
-		//	Debug.Log( res.DataAsText);
 
-         //   if (res.IsSuccess){
-		//		string request_result = res.DataAsText;
-		//			statusAuth.text = "Successfully sent to your email";
-		//			isConnecting = false;	
-		//	}
-		//	else{
-		//		statusAuth.text = "Failed to connect!";
-		//	}
-		//	isConnecting = false;
-		//});
-		//www.AddField("usernameOrEmail", forget_Text_email.text);
-		//www.Send();
-	}
 
     //Ghilman
+    public void Reset() {
+       StartCoroutine (Upload());
+    }
+
+    IEnumerator Upload()
+    {
+        Debug.Log("Upload forget request");
+        WWWForm form = new WWWForm();
+        form.AddField("usernameOrEmail", forget_Text_email.text);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("https://wackronym.net/api/auth/forgot", form))
+            {
+            www.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            yield return www.Send();
+
+            if (www.isError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log("POST successful!");
+                // Print Body
+                Debug.Log(www.downloadHandler.text);
+                }
+            }
+    }
+
     public void OnUpdateProfileCloseButtonClick()
     {
         GameManager.Instance.menuManager.PopMenu();
