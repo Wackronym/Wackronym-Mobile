@@ -177,7 +177,8 @@ public class Authenticate : BaseUI
 
 
 				}
-			}
+                statusAuth.text = "successful!";
+            }
 			else{
 				statusAuth.text = "Incorrect User!";
 			}
@@ -236,9 +237,11 @@ public class Authenticate : BaseUI
 					if(p != null){
 						p.RefresUI();
 					}
-					isConnecting = false;	
-				}
-			}
+					isConnecting = false;
+                    
+                }
+                statusAuth.text = "successful!";
+            }
 			else{
 				if( res.DataAsText.Contains("The password must be at least 10 characters long")){
 					statusAuth.text = "The password must be at least 10 characters long.";
@@ -283,9 +286,11 @@ public class Authenticate : BaseUI
             if (www.isError)
             {
                 Debug.Log(www.error);
+                statusAuth.text = "error!";
             }
             else
             {
+                statusAuth.text = "successful!";
                 Debug.Log("POST successful!");
                 // Print Body
                 Debug.Log(www.downloadHandler.text);
@@ -326,12 +331,12 @@ public class Authenticate : BaseUI
                     GameManager.Instance.header = res.Headers;
                 }
                 ProfileIsUpdated();
+                statusAuth.text = "successful!";
             }
             else
             {
                 statusAuth.text = "Field to updated information!";
             }
-
             isConnecting = false;
         });
 
@@ -422,6 +427,8 @@ public class Authenticate : BaseUI
                     }
                     Debug.Log(res.Data);
                 }
+                OnChangePasswordCloseButtonClick();
+                statusAuth.text = "successful!";
             }
             else
             {
