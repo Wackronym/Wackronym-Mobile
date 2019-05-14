@@ -266,15 +266,15 @@ public class Authenticate : BaseUI
 		www.Send();
 	}
 
-
-    //Ghilman
-    public void Reset() {
-       StartCoroutine (Upload());
-    }
-
-    IEnumerator Upload()
+    public void Reset()
     {
-        Debug.Log("Upload forget request");
+        //Ghilman
+        StartCoroutine(ForgetPasswordReques());
+        //Ghilmam
+    }
+    //Ghilman
+    IEnumerator ForgetPasswordReques()
+    {
         WWWForm form = new WWWForm();
         form.AddField("usernameOrEmail", forget_Text_email.text);
 
@@ -291,100 +291,126 @@ public class Authenticate : BaseUI
             else
             {
                 statusAuth.text = "successful!";
-                Debug.Log("POST successful!");
-                // Print Body
                 Debug.Log(www.downloadHandler.text);
-                }
+                OnForgetPasswordCloseButtonClick();
             }
+        }
     }
 
-    public void OnUpdateProfileCloseButtonClick()
+    IEnumerator ChangePasswordReques()
     {
-        GameManager.Instance.menuManager.PopMenu();
-    }
-    public void OnChangePassPPButtonClick()
-    {
-        GameManager.Instance.authenticateState = AuthenticateState.changePassword;
-        updateProfilePanel.SetActive(false);
-        changePasswordPanel.SetActive(true);
-    }
-    public void OnChangePasswordCloseButtonClick()
-    {
-        GameManager.Instance.authenticateState = AuthenticateState.UpdateProfile;
-        changePasswordPanel.SetActive(false);
-        updateProfilePanel.SetActive(true);
-    }
-    public void OnUptateProfileButtonClick()
-    {
-        Debug.Log("this is the function for uptade profie");
+        WWWForm form = new WWWForm();
 
-        isConnecting = true;
-        loginHudIndex = 0;
-        HTTPRequest www = new HTTPRequest(new Uri("https://wackronym.net/api/users/mobileEditUser"), HTTPMethods.Post, (request, response) => {
-            HTTPResponse res = (HTTPResponse)response;
-            Debug.Log(res.DataAsText);
-            if (res.IsSuccess)
+        string _userId = GameManager.Instance.player._id;
+
+        form.AddField("currentPassword", ChangePass_Text_CurrentPass.text);
+        form.AddField("newPassword", ChangePass_Text_NewPass.text);
+        form.AddField("verifyPassword", ChangePass_Text_VerifyPass.text);
+        form.AddField("userId", _userId);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("https://wackronym.net/api/users/password", form))
+        {
+            yield return www.Send();
+
+            if (www.isError)
             {
-                string request_result = res.DataAsText;
-                if (request_result.Length > 10)
-                {
-                    GameManager.Instance.header = res.Headers;
-                }
-                ProfileIsUpdated();
-                statusAuth.text = "successful!";
+                Debug.Log(www.error);
+                statusAuth.text = "error!";
             }
             else
             {
-                statusAuth.text = "Field to updated information!";
+                statusAuth.text = "successful!";
+                Debug.Log(www.downloadHandler.text);
+                OnChangePasswordCloseButtonClick();
             }
-            isConnecting = false;
-        });
+        }
+    }
+
+    IEnumerator UpdateProfileReques()
+    {
+        WWWForm form = new WWWForm();
 
         bool canSend = false;
         string errorMessage = "";
 
-        www.AddField("user", GameManager.Instance.player._id);
+        form.AddField("user", GameManager.Instance.player._id);
 
         ///check for first name. 
-        if (!string.IsNullOrEmpty(update_Text_fName.text)){
-            www.AddField("firstName", update_Text_fName.text);
+        if (!string.IsNullOrEmpty(update_Text_fName.text))
+        {
+            form.AddField("firstName", update_Text_fName.text);
             canSend = true;
-        }else{
+        }
+        else
+        {
             canSend = false;
             errorMessage = "Please enter the first name.";
         }
 
         /// check for last name. 
-        if (!string.IsNullOrEmpty(update_Text_lName.text)){
-            www.AddField("lastName", update_Text_lName.text);
+        if (!string.IsNullOrEmpty(update_Text_lName.text))
+        {
+            form.AddField("lastName", update_Text_lName.text);
             canSend = true;
-        }else{
+        }
+        else
+        {
             canSend = false;
             errorMessage = "Please enter the last name.";
         }
         /// check for display name. 
-        if (!string.IsNullOrEmpty(update_Text_username.text)){
-            www.AddField("displayName", update_Text_username.text);
+        if (!string.IsNullOrEmpty(update_Text_username.text))
+        {
+            form.AddField("displayName", update_Text_username.text);
             canSend = true;
-        }else{
+        }
+        else
+        {
             canSend = false;
             errorMessage = "Please enter the display name.";
         }
 
         /// check for email.
-        if (!string.IsNullOrEmpty(update_Text_email.text)){
-            www.AddField("email", update_Text_email.text);
+        if (!string.IsNullOrEmpty(update_Text_email.text))
+        {
+            form.AddField("email", update_Text_email.text);
             canSend = true;
-        }else{
+        }
+        else
+        {
             canSend = false;
             errorMessage = "Please enter the email first.";
         }
-       
-        if (canSend){
-            www.Send();
-        }else{
+
+        if (canSend)
+        {
+            using (UnityWebRequest www = UnityWebRequest.Post("https://wackronym.net/api/users/mobileEditUser", form))
+            {
+                yield return www.Send();
+
+                if (www.isError)
+                {
+                    Debug.Log(www.error);
+                    statusAuth.text = "error!";
+                }
+                else
+                {
+                    Debug.Log(www.downloadHandler.text);
+                    statusAuth.text = "successful!";
+                    ProfileIsUpdated();
+                }
+            }
+        }
+        else
+        {
             statusAuth.text = errorMessage;
         }
+    }
+
+    public void OnUptateProfileButtonClick()
+    {
+        Debug.Log("this is the function for uptade profie");
+        StartCoroutine(UpdateProfileReques());
     }
 
     void ProfileIsUpdated()
@@ -405,51 +431,33 @@ public class Authenticate : BaseUI
     }
     public void OnChangePasswordButtonClick()
     {
-        Debug.Log("please change the password");
-        isConnecting = true;
-        loginHudIndex = 0;
-        HTTPRequest www = new HTTPRequest(new Uri("https://wackronym.net/api/users/password"), HTTPMethods.Post, (request, response) => {
-            HTTPResponse res = (HTTPResponse)response;
-            Debug.Log(res.DataAsText);
-            Debug.Log("res is up");
-            if (res.IsSuccess)
-            {
-                string request_result = res.DataAsText;
-                if (request_result.Length > 10)
-                {
-                    GameManager.Instance.header = res.Headers;
-                    Debug.Log(res.Data);
-                    //GameManager.Instance.player = Json.Decode(request_result) as Player;
-                    Dictionary<string, object> b = Json.Decode(request_result) as Dictionary<string, object>;
-                    foreach (string key in b.Keys)
-                    {
-                        Debug.Log("key = " + key + " value = " + b[key]);
-                    }
-                    Debug.Log(res.Data);
-                }
-                OnChangePasswordCloseButtonClick();
-                statusAuth.text = "successful!";
-            }
-            else
-            {
-                statusAuth.text = "Incorrect User!";
-            }
-
-            isConnecting = false;
-        });
-       // currentPassword, newPassword, verifyPassword, userId
-
-        string _userId = GameManager.Instance.player._id;
-        www.AddField("currentPassword", ChangePass_Text_CurrentPass.text);
-        www.AddField("newPassword", ChangePass_Text_NewPass.text);
-        www.AddField("verifyPassword", ChangePass_Text_VerifyPass.text);
-        www.AddField("userId", _userId);
-        www.Send();
+        StartCoroutine(ChangePasswordReques());
     }
- 
 
+    public void OnUpdateProfileCloseButtonClick()
+    {
+        GameManager.Instance.menuManager.PopMenu();
+    }
+    public void OnChangePassPPButtonClick()
+    {
+        GameManager.Instance.authenticateState = AuthenticateState.changePassword;
+        updateProfilePanel.SetActive(false);
+        changePasswordPanel.SetActive(true);
+    }
+    public void OnChangePasswordCloseButtonClick()
+    {
+        GameManager.Instance.authenticateState = AuthenticateState.UpdateProfile;
+        changePasswordPanel.SetActive(false);
+        updateProfilePanel.SetActive(true);
+    }
+    public void OnForgetPasswordCloseButtonClick()
+    {
+        loginPanel.SetActive(true);
+        forgetPanel.SetActive(false);
+    }
     //Ghilman
-	public void CloseAuthBox(){
+
+    public void CloseAuthBox(){
         //Ghilman
         GameManager.Instance.menuManager.PopMenuToState(UIManager.State.MainMenu);
         //Ghilman
