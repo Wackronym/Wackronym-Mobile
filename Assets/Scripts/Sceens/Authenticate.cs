@@ -269,11 +269,35 @@ public class Authenticate : BaseUI
     public void Reset()
     {
         //Ghilman
-        StartCoroutine(ForgetPasswordReques());
+        StartCoroutine(ForgetPasswordRequest());
         //Ghilmam
     }
     //Ghilman
-    IEnumerator ForgetPasswordReques()
+    IEnumerator LoginRequest()
+    {
+        WWWForm form = new WWWForm();
+
+        form.AddField("usernameOrEmail", login_Text_email.text);
+        form.AddField("password", login_Text_password.text);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("https://wackronym.net/api/auth/signin", form))
+        {
+            yield return www.Send();
+
+            if (www.isError)
+            {
+                Debug.Log(www.error);
+                statusAuth.text = "error!";
+            }
+            else
+            {
+
+                statusAuth.text = "successful!";
+                Debug.Log(www.downloadHandler.text);
+            }
+        }
+    }
+    IEnumerator ForgetPasswordRequest()
     {
         WWWForm form = new WWWForm();
         form.AddField("usernameOrEmail", forget_Text_email.text);
@@ -297,7 +321,7 @@ public class Authenticate : BaseUI
         }
     }
 
-    IEnumerator ChangePasswordReques()
+    IEnumerator ChangePasswordRequest()
     {
         WWWForm form = new WWWForm();
 
@@ -326,7 +350,7 @@ public class Authenticate : BaseUI
         }
     }
 
-    IEnumerator UpdateProfileReques()
+    IEnumerator UpdateProfileRequest()
     {
         WWWForm form = new WWWForm();
 
@@ -410,7 +434,7 @@ public class Authenticate : BaseUI
     public void OnUptateProfileButtonClick()
     {
         Debug.Log("this is the function for uptade profie");
-        StartCoroutine(UpdateProfileReques());
+        StartCoroutine(UpdateProfileRequest());
     }
 
     void ProfileIsUpdated()
@@ -431,7 +455,7 @@ public class Authenticate : BaseUI
     }
     public void OnChangePasswordButtonClick()
     {
-        StartCoroutine(ChangePasswordReques());
+        StartCoroutine(ChangePasswordRequest());
     }
 
     public void OnUpdateProfileCloseButtonClick()
