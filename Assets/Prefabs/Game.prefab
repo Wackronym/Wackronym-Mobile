@@ -20164,7 +20164,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 5
   isPopup: 0
-  Coins: {fileID: 114605275996505088}
   hours: {fileID: 224178597429681278}
   minutes: {fileID: 224326784276381840}
   seconds: {fileID: 224136825367031692}
