@@ -8,11 +8,11 @@ using MaterialUI;
 using BestHTTP;
 using BestHTTP.JSON;
 public class Menu : BaseUI {
-	public TextMesh XP;
-    public TextMesh Clock;
-    public TextMesh Coins;
-    public TextMesh Level;
-	public TextMesh Scores;
+	//public TextMesh XP;
+    //public TextMesh Clock;
+   // public TextMesh Coins;
+   // public TextMesh Level;
+	//public TextMesh Scores;
 	
 	void Start () {
 		GameManager.Instance.menuManager.previousState = UIManager.State.MainMenu;
@@ -128,8 +128,10 @@ public class Menu : BaseUI {
 			GameManager.Instance.menuManager.PopMenuToState(UIManager.State.MainMenu);
 		}
 	}
-    public void UpdateUI()
-    {
-        Coins.text = GameManager.Instance.Coin().ToString();
-    }
+    //Ghilman
+    //public void UpdateUI()
+   // {
+   //     Coins.text = GameManager.Instance.Coin().ToString();
+   // }
+   //Ghilman
 }

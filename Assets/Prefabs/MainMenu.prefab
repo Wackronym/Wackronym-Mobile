@@ -7297,11 +7297,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 1
   isPopup: 0
-  XP: {fileID: 0}
-  Clock: {fileID: 0}
-  Coins: {fileID: 0}
-  Level: {fileID: 0}
-  Scores: {fileID: 0}
 --- !u!114 &114403085193258198
 MonoBehaviour:
   m_ObjectHideFlags: 1
