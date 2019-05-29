@@ -8,7 +8,7 @@ using System;
 public class Game : BaseUI
 {
   
-    public TMPro.TextMeshPro Coins;
+    //public TMPro.TextMeshPro Coins;
     public RectTransform hours, minutes, seconds;
     private const float hoursToDegrees = 360f / 12f, minutesToDegrees = 360f / 60f, secondsToDegrees = 360f / 60f;
     public bool analog;
@@ -391,17 +391,17 @@ public class Game : BaseUI
         GameManager.Instance.GetComponent<AudioSource>().PlayOneShot(GameManager.Instance.click);
     }
 
-    public void UpdateUI()
-    {
-        Coins.text = GameManager.Instance.Coin().ToString();
-        Invoke("CheckUI", .5f);
-    }
+   // public void UpdateUI()
+   // {
+   //     Coins.text = GameManager.Instance.Coin().ToString();
+   //     Invoke("CheckUI", .5f);
+   // }
 
-    private void CheckUI()
-    {
-        Coins.enabled = false;
-        Coins.enabled = true;
-    }
+   // private void CheckUI()
+   // {
+   //     Coins.enabled = false;
+   //     Coins.enabled = true;
+  //  }
 
     //Ghilman
     /// <summary>
