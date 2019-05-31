@@ -36,6 +36,7 @@ public class Favorites : MonoBehaviour
 		}
 		void Start()
 		{
+        Debug.Log("this is favorite star");
 			mLoopListView.InitListView(TotalItemCount, InitScrollView);
 			mLoopListView.mOnEndDragAction = OnEndDrag;
 			transform.parent.GetChild(3).gameObject.SetActive(false);
@@ -125,6 +126,7 @@ public class Favorites : MonoBehaviour
     }
     LoopListViewItem2 InitScrollView(LoopListView2 listView, int index)
 		{
+        Debug.Log("InitScrollView index = "+ index);
 			if (index < 0 || index >= TotalItemCount)
 			{
 				return null;
@@ -145,7 +147,7 @@ public class Favorites : MonoBehaviour
 				item.IsInitHandlerCalled = true;
 				itemScript.Init();
 			}
-			itemScript.SetItemData(itemData, false);
+			itemScript.SetItemData(itemData, false,index);
 			return item;
 		}
 

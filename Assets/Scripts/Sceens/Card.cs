@@ -310,7 +310,7 @@ public class RoundData{
 				item.IsInitHandlerCalled = true;
 				itemScript.Init();
 			}
-			itemScript.SetItemData(itemData, isHistory);
+			itemScript.SetItemData(itemData, isHistory,index);
 			return item;
 		}
 

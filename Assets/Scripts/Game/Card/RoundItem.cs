@@ -13,6 +13,7 @@ public class RoundItem : MonoBehaviour {
     public Toggle favoriteToggle;
     public RoundData roundData;
     bool isHistory;
+    int indexInDumyFavorite;
     //Ghilman
 
     public void Init()
@@ -26,10 +27,11 @@ public class RoundItem : MonoBehaviour {
     /// </summary>
     /// <param name="_itemData"></param>
     /// <param name="_isHistory"></param>
-    public void SetItemData(RoundData _itemData, bool _isHistory)
+    public void SetItemData(RoundData _itemData, bool _isHistory,int _indexInDumyFavorite)
 	{
         roundData = _itemData;
         isHistory = _isHistory;
+        indexInDumyFavorite = _indexInDumyFavorite;
 
         string[] srtingParts = roundData.mSenence.Split("_"[0]);
         string stringToShow = srtingParts[0];
@@ -73,10 +75,13 @@ public class RoundItem : MonoBehaviour {
             }
             else
             {
+                
                 GameManager.Instance.shouldSaveFavorites = true;
                 GameManager.Instance.favorite[roundData.mainIndex].rData[roundData.innerIndex].reCheck = true;
                 GameManager.Instance.favorite[roundData.mainIndex].rData[roundData.innerIndex] = null;
-                //this.gameObject.SetActive(false);
+                GameManager.Instance.dummyFavorite.RemoveAt(indexInDumyFavorite);
+
+                this.gameObject.SetActive(false);
                 DeleteMySelf();
             }
         }
@@ -84,13 +89,13 @@ public class RoundItem : MonoBehaviour {
     void DeleteMySelf()
     {
         //GameObject.Destroy(this.gameObject);
-        foreach (Transform t in this.transform)
-        {
-            t.gameObject.SetActive(false);
-        }
-        RectTransform MyRectTransform = this.GetComponent<RectTransform>();
-        MyRectTransform.sizeDelta = Vector2.zero;
-        //this.transform.parent.parent.parent.GetComponent<LoopListView2>().RecycleAllItem();
+       // foreach (Transform t in this.transform)
+        //{
+       //     t.gameObject.SetActive(false);
+       // }
+       // RectTransform MyRectTransform = this.GetComponent<RectTransform>();
+      //  MyRectTransform.sizeDelta = Vector2.zero;
+        this.transform.parent.parent.parent.GetComponent<LoopListView2>().RefreshAllShownItem();
     }
     void AddInFavorite()
     {
