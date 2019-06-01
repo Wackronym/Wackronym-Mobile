@@ -5,7 +5,9 @@ using SuperScrollView;
 using BayatGames.SaveGamePro;
 using System;
 using UnityEngine.UI;
-	[Serializable]
+using System.Linq;
+
+[Serializable]
 	public class CardData
     {
 	    public int mId; // Ghilman,, Numan is saving card id in this var.
@@ -87,7 +89,7 @@ public class RoundData{
         //Ghilman
         if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
         {
-            Debug.Log("this is the main menu");
+           // Debug.Log("this is the main menu");
             HideSaveButton();
         }
         //Ghilman
@@ -231,10 +233,17 @@ public class RoundData{
         if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
         {
             //Ghilman
-            Debug.Log("this is the card data = "+currentCardData.rData.Count);
+           // Debug.Log("this is the card data = "+currentCardData.rData.Count);
             if (isHistory)
             {
-                
+                if (!currentCardData.rData.Any(rountData => rountData.reCheck))
+                {
+                    Debug.Log("there is some thing to save");
+                }
+                else
+                {
+                    Debug.Log("no no no");
+                }
             }
             //Ghilman
             GameManager.Instance.menuManager.PopMenu();
@@ -347,7 +356,7 @@ public class RoundData{
 				return null;
 			}
         //Ghilman
-        Debug.Log("count = " + GameManager.Instance.mItemDataList[GameManager.Instance.cardIndex].rData.Count);
+        //Debug.Log("count = " + GameManager.Instance.mItemDataList[GameManager.Instance.cardIndex].rData.Count);
         //Ghilman
         return GameManager.Instance.mItemDataList[GameManager.Instance.cardIndex].rData[index];
 		}

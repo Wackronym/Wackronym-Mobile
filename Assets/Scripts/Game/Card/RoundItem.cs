@@ -38,7 +38,7 @@ public class RoundItem : MonoBehaviour {
 
         mainText.text = stringToShow+ " <color=Blue>"+ roundData.mAnswer+"</color> "+ srtingParts[srtingParts.Length-1];
 
-        if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
+        if (GameManager.Instance.menuManager.currentState == UIManager.State.MainMenu)
         {
             favoriteToggle.enabled = true;
             if (_isHistory)
@@ -65,17 +65,17 @@ public class RoundItem : MonoBehaviour {
     /// <summary>
     /// this function will remove the Favorite.
     /// </summary>
-    public void RemoveFromFavorite()
+    void RemoveFromFavorite()
     {
-        if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
+        if (GameManager.Instance.menuManager.currentState == UIManager.State.MainMenu)
         {
             if (isHistory)
             {
-
+                Debug.Log("this is history");
             }
             else
             {
-                
+                Debug.Log("this is not history");
                 GameManager.Instance.shouldSaveFavorites = true;
                 GameManager.Instance.favorite[roundData.mainIndex].rData[roundData.innerIndex].reCheck = true;
                 GameManager.Instance.favorite[roundData.mainIndex].rData[roundData.innerIndex] = null;
@@ -88,27 +88,35 @@ public class RoundItem : MonoBehaviour {
     }
     void DeleteMySelf()
     {
-        //GameObject.Destroy(this.gameObject);
-       // foreach (Transform t in this.transform)
-        //{
-       //     t.gameObject.SetActive(false);
-       // }
-       // RectTransform MyRectTransform = this.GetComponent<RectTransform>();
-      //  MyRectTransform.sizeDelta = Vector2.zero;
         this.transform.parent.parent.parent.GetComponent<LoopListView2>().RefreshAllShownItem();
     }
     void AddInFavorite()
     {
-        if (isHistory)
+        Debug.Log("GameManager.Instance.menuManager.currentState = " + GameManager.Instance.menuManager.currentState);
+        if (GameManager.Instance.menuManager.currentState == UIManager.State.MainMenu)
         {
-            GameManager.Instance.mItemDataList[GameManager.Instance.cardIndex].rData[roundData.innerIndex].reCheck = false;
+            Debug.Log("this is main menu");
+            if (isHistory)
+            {
+                Debug.Log("this is history too");
+                GameManager.Instance.mItemDataList[GameManager.Instance.cardIndex].rData[roundData.innerIndex].reCheck = false;
+            }
+            else
+            {
+                Debug.Log("this is faverites too");
+            }
         }
+        else
+        {
+            Debug.Log("this is not main menu");
+        }
+        
     }
 
     /// <summary>
     /// this will call on value change of toggle.
     /// </summary>
-    void OnValuesChangeOfFavoriteToggle()
+    public void OnValuesChangeOfFavoriteToggle()
     {
         if (!favoriteToggle.isOn)
         {
@@ -118,10 +126,6 @@ public class RoundItem : MonoBehaviour {
         {
             AddInFavorite();
         }
-    }
-    void OnDestroy()
-    {
-       // this.transform.parent.parent.parent.parent.GetComponent<Favorites>().ResetMyUI();
     }
     //Ghilman
 
