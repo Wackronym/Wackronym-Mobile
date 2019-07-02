@@ -57,7 +57,8 @@ public class NewRound : BaseUI{
 		if(GameManager.Instance.currentRound >= GameManager.Instance.menuManager.GetComponentInChildren<Game>().totalRound && GameManager.Instance.menuManager.NavigationStackPeek()!= UIManager.State.Win){
 			//ring.fillAmount = GameManager.Instance.currentRound/totalRound;
 			GameManager.Instance.cardIndex = GameManager.Instance.mItemDataList.Count-1;
-			GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
+            Debug.Log("Resume");
+            GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
 			
 			return;
 		}

@@ -174,7 +174,8 @@ public class Game : BaseUI
         if (isCorrectAnswer()){
 			if(GameManager.Instance.currentRound >= totalRound && GameManager.Instance.menuManager.NavigationStackPeek()!= UIManager.State.Win){
 				GameManager.Instance.cardIndex = GameManager.Instance.mItemDataList.Count-1;
-				GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
+                Debug.Log("ValidateAnswer");
+                GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
 				startime = false;
 				List<RoundData> r = GameManager.Instance.mItemDataList[GameManager.Instance.mItemDataList.Count-1].rData;
 				r[r.Count-1].mUsedRoundTime = sec.ToString();
@@ -261,7 +262,8 @@ public class Game : BaseUI
 			GameManager.Instance.cardIndex = GameManager.Instance.mItemDataList.Count-1;
 			r[r.Count-1].id = GameManager.Instance.currentRound-1;
 			r[r.Count-1].reCheck = true;
-			GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
+            Debug.Log("NextRound");
+            GameManager.Instance.menuManager.PushMenu(UIManager.State.Win);
 			startime = false;
 			return;
 		}

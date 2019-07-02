@@ -143,7 +143,7 @@ public class UIManager : MonoBehaviour {
 
 
 	public void PushMenu(UIManager.State g)
-	{	
+	{
 		if (GetMenuForState(g).isPopup == false) {
 			if (navigationStack.Count != 0)
 			{

@@ -38,7 +38,8 @@ public class RoundItem : MonoBehaviour {
 
         mainText.text = stringToShow+ " <color=Blue>"+ roundData.mAnswer+"</color> "+ srtingParts[srtingParts.Length-1];
 
-        if (GameManager.Instance.menuManager.currentState == UIManager.State.MainMenu)
+        //Ghilman
+        if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
         {
             favoriteToggle.enabled = true;
             if (_isHistory)
@@ -54,7 +55,8 @@ public class RoundItem : MonoBehaviour {
         {
             Debug.Log("there is a other thing not main menu");
         }
-    } 
+        //Ghilman
+    }
     /// <summary>
     /// this function will be called on share button pressed.
     /// </summary>
@@ -67,7 +69,7 @@ public class RoundItem : MonoBehaviour {
     /// </summary>
     void RemoveFromFavorite()
     {
-        if (GameManager.Instance.menuManager.currentState == UIManager.State.MainMenu)
+        if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
         {
             if (isHistory)
             {
@@ -92,14 +94,13 @@ public class RoundItem : MonoBehaviour {
     }
     void AddInFavorite()
     {
-        Debug.Log("GameManager.Instance.menuManager.currentState = " + GameManager.Instance.menuManager.currentState);
-        if (GameManager.Instance.menuManager.currentState == UIManager.State.MainMenu)
+        if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
         {
             Debug.Log("this is main menu");
             if (isHistory)
             {
                 Debug.Log("this is history too");
-                GameManager.Instance.mItemDataList[GameManager.Instance.cardIndex].rData[roundData.innerIndex].reCheck = false;
+               // GameManager.Instance.mItemDataList[GameManager.Instance.cardIndex].rData[roundData.innerIndex].reCheck = false;
             }
             else
             {

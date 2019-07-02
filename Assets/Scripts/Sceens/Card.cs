@@ -87,7 +87,7 @@ public class RoundData{
     {
         GameManager.Instance.Scroll.transform.parent.GetChild(0).gameObject.SetActive(false);
         //Ghilman
-        if (GameManager.Instance.menuManager.previousState == UIManager.State.MainMenu)
+        if (GameManager.Instance.menuManager.currentState == UIManager.State.MainMenu)
         {
            // Debug.Log("this is the main menu");
             HideSaveButton();
